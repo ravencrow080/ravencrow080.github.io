@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KODO-AI - 個人開発 × AI</title>
+  <meta name="description" content="KODO-AIは個人開発者によるiOSアプリ・AI開発のブランドです。">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --dark: #1C1C1E;
+      --gray: #6C6C70;
+      --light: #F2F2F7;
+      --white: #FFFFFF;
+      --accent: #FF2D55;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif;
+      color: var(--dark);
+      background: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 28px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: 1px;
+    }
+
+    .brand span { color: var(--accent); }
+
+    .hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,45,85,0.15);
+      color: var(--accent);
+      border: 1px solid rgba(255,45,85,0.3);
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 8vw, 72px);
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -2px;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 span { color: var(--accent); }
+
+    .hero p {
+      font-size: clamp(15px, 2.5vw, 18px);
+      color: rgba(255,255,255,0.55);
+      max-width: 480px;
+      line-height: 1.7;
+      margin-bottom: 48px;
+    }
+
+    .apps-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .apps-grid {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .app-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 24px 28px;
+      text-align: left;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s, border-color 0.2s;
+      width: 240px;
+    }
+
+    .app-card:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,45,85,0.4);
+      transform: translateY(-4px);
+    }
+
+    .app-card-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, #FF2D55, #FF8FA3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin-bottom: 16px;
+    }
+
+    .app-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+
+    .app-card p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.5;
+    }
+
+    .app-card-tag {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      background: rgba(255,45,85,0.12);
+      padding: 3px 10px;
+      border-radius: 100px;
+    }
+
+    footer {
+      padding: 24px 32px;
+      text-align: center;
+      font-size: 13px;
+      color: rgba(255,255,255,0.25);
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+
+    footer a {
+      color: rgba(255,255,255,0.35);
+      text-decoration: none;
+    }
+
+    footer a:hover { color: rgba(255,255,255,0.6); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">KODO<span>-AI</span></div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-badge">🤖 個人開発 × AI</div>
+    <h1>Apps by<br><span>KODO-AI</span></h1>
+    <p>使いやすくて、日々の生活に溶け込むアプリを。<br>個人開発者がAIと共につくるiOSアプリ。</p>
+
+    <p class="apps-title">Our Apps</p>
+    <div class="apps-grid">
+      <a class="app-card" href="/famnote/">
+        <div class="app-card-icon">📅</div>
+        <h3>ファミリーイベントNOTE</h3>
+        <p>家族みんなの予定・タスク・準備をひとつで管理</p>
+        <span class="app-card-tag">iOS 無料</span>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 KODO-AI &nbsp;·&nbsp; <a href="mailto:ravencrow080@gmail.com">お問い合わせ</a></p>
+  </footer>
+
+</body>
+</html>
