@@ -170,50 +170,89 @@
       margin-bottom: 40px;
     }
 
+    .screenshots-outer {
+      position: relative;
+    }
+
+    .screenshots-outer::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 16px;
+      width: 48px;
+      background: linear-gradient(to right, transparent, var(--light));
+      pointer-events: none;
+    }
+
     .screenshots-scroll {
       display: flex;
       gap: 16px;
       overflow-x: auto;
-      padding-bottom: 16px;
+      padding: 8px 24px 20px;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
+      cursor: grab;
     }
 
+    .screenshots-scroll:active { cursor: grabbing; }
     .screenshots-scroll::-webkit-scrollbar { display: none; }
 
     .screenshot-frame {
-      flex: 0 0 220px;
+      flex: 0 0 200px;
       scroll-snap-align: center;
     }
 
     .screenshot-frame img {
-      width: 220px;
-      height: 477px;
+      width: 200px;
+      height: 433px;
       border-radius: 20px;
       box-shadow: 0 12px 40px rgba(0,0,0,0.15);
       object-fit: cover;
+      object-position: top;
       display: block;
     }
 
     .screenshot-caption {
-      margin-top: 12px;
+      margin-top: 10px;
       font-size: 13px;
       font-weight: 600;
       color: var(--gray);
       text-align: center;
     }
 
-    .screenshot-placeholder {
-      width: 220px;
-      height: 477px;
-      border-radius: 20px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
-      background: linear-gradient(160deg, #FFE4EA 0%, #FFF0F3 100%);
+    .scroll-hint {
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 64px;
+      gap: 6px;
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--gray);
+      opacity: 0.7;
+    }
+
+    .scroll-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 16px;
+    }
+
+    .scroll-dots span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--pink);
+      opacity: 0.25;
+    }
+
+    .scroll-dots span:first-child { opacity: 1; }
+
+    @media (max-width: 480px) {
+      .screenshot-frame { flex: 0 0 160px; }
+      .screenshot-frame img { width: 160px; height: 346px; }
     }
 
     /* ===== FEATURES ===== */
@@ -411,24 +450,39 @@
     <p class="section-label">Screenshots</p>
     <h2 class="section-title">シンプルで使いやすい</h2>
     <p class="section-desc">家族みんなが直感的に使えるデザイン</p>
-    <div class="screenshots-scroll">
-      <div class="screenshot-frame">
-        <img src="images/screen1.png" alt="カレンダー画面">
-        <p class="screenshot-caption">カレンダー</p>
-      </div>
-      <div class="screenshot-frame">
-        <img src="images/screen2.png" alt="ダッシュボード画面">
-        <p class="screenshot-caption">ダッシュボード</p>
-      </div>
-      <div class="screenshot-frame">
-        <img src="images/screen3.png" alt="メンバー設定画面">
-        <p class="screenshot-caption">メンバー設定</p>
-      </div>
-      <div class="screenshot-frame">
-        <img src="images/screen4.png" alt="サブスケジュール画面">
-        <p class="screenshot-caption">サブスケジュール</p>
+    <div class="screenshots-outer">
+      <div class="screenshots-scroll" id="screenshotScroll">
+        <div class="screenshot-frame">
+          <img src="images/screen1.png" alt="カレンダー画面">
+          <p class="screenshot-caption">カレンダー</p>
+        </div>
+        <div class="screenshot-frame">
+          <img src="images/screen2.png" alt="ダッシュボード画面">
+          <p class="screenshot-caption">ダッシュボード</p>
+        </div>
+        <div class="screenshot-frame">
+          <img src="images/screen3.png" alt="メンバー設定画面">
+          <p class="screenshot-caption">メンバー設定</p>
+        </div>
+        <div class="screenshot-frame">
+          <img src="images/screen4.png" alt="サブスケジュール画面">
+          <p class="screenshot-caption">サブスケジュール</p>
+        </div>
       </div>
     </div>
+    <p class="scroll-hint">← スワイプして全部見る →</p>
+    <div class="scroll-dots" id="scrollDots">
+      <span></span><span></span><span></span><span></span>
+    </div>
+
+    <script>
+      const scroll = document.getElementById('screenshotScroll');
+      const dots = document.querySelectorAll('#scrollDots span');
+      scroll.addEventListener('scroll', () => {
+        const index = Math.round(scroll.scrollLeft / (scroll.scrollWidth / dots.length));
+        dots.forEach((d, i) => d.style.opacity = i === index ? '1' : '0.25');
+      });
+    </script>
   </section>
 
   <!-- FEATURES -->
