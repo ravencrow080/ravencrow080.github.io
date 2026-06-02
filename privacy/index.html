@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>プライバシーポリシー - KODO-AI</title>
+  <meta name="description" content="KODO-AIが提供するアプリおよびサービスのプライバシーポリシーです。">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent: #FF2D55;
+      --accent-pale: #FFF0F3;
+      --dark: #1C1C1E;
+      --gray: #6C6C70;
+      --light: #F2F2F7;
+      --white: #FFFFFF;
+      --radius: 16px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif;
+      color: var(--dark);
+      background: var(--white);
+      line-height: 1.75;
+    }
+
+    /* ===== HEADER ===== */
+    .page-header {
+      background: var(--dark);
+      padding: 56px 24px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-header::before {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: rgba(255,45,85,0.08);
+      border-radius: 50%;
+      top: -80px;
+      right: -80px;
+    }
+
+    .back-link {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 28px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--white); }
+
+    .page-header .brand {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .page-header h1 {
+      font-size: clamp(24px, 5vw, 34px);
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+
+    .page-header .subtitle {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* ===== CONTENT ===== */
+    .content {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .updated-date {
+      font-size: 13px;
+      color: var(--gray);
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--light);
+    }
+
+    .intro {
+      font-size: 15px;
+      color: var(--gray);
+      margin-bottom: 48px;
+      padding: 20px 24px;
+      background: var(--light);
+      border-radius: var(--radius);
+      border-left: 4px solid var(--accent);
+      line-height: 1.8;
+    }
+
+    .section {
+      margin-bottom: 48px;
+    }
+
+    .section-number {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .section h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 16px;
+      letter-spacing: -0.3px;
+    }
+
+    .section p {
+      font-size: 15px;
+      color: #3A3A3C;
+      margin-bottom: 12px;
+    }
+
+    .section ul, .section ol {
+      margin: 12px 0 16px 20px;
+    }
+
+    .section li {
+      font-size: 15px;
+      color: #3A3A3C;
+      margin-bottom: 8px;
+    }
+
+    /* info card */
+    .info-card {
+      background: var(--light);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+
+    .info-card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-card p {
+      font-size: 14px;
+      color: var(--gray);
+      margin: 0;
+    }
+
+    /* app tag */
+    .app-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--accent-pale);
+      padding: 2px 10px;
+      border-radius: 20px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    /* highlight box */
+    .highlight {
+      background: var(--accent-pale);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin: 20px 0;
+    }
+
+    .highlight p {
+      font-size: 14px;
+      color: #3A3A3C;
+      margin: 0;
+    }
+
+    .highlight strong {
+      color: var(--accent);
+    }
+
+    /* table */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+
+    .data-table th {
+      background: var(--light);
+      text-align: left;
+      padding: 10px 14px;
+      font-weight: 700;
+      color: var(--dark);
+      border-bottom: 2px solid #E5E5EA;
+    }
+
+    .data-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #E5E5EA;
+      color: #3A3A3C;
+      vertical-align: top;
+    }
+
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    @media (max-width: 480px) {
+      .data-table { font-size: 12px; }
+      .data-table th, .data-table td { padding: 8px 10px; }
+    }
+
+    /* divider */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--light);
+      margin: 48px 0;
+    }
+
+    /* ===== CONTACT ===== */
+    .contact-card {
+      background: var(--light);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      text-align: center;
+    }
+
+    .contact-card h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+
+    .contact-card p {
+      font-size: 14px;
+      color: var(--gray);
+      margin-bottom: 20px;
+    }
+
+    .contact-email {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--white);
+      color: var(--accent);
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      box-shadow: 0 2px 12px rgba(255,45,85,0.1);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+
+    .contact-email:hover {
+      box-shadow: 0 4px 20px rgba(255,45,85,0.18);
+      transform: translateY(-1px);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 13px;
+    }
+
+    footer a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+    }
+
+    footer a:hover { color: var(--white); }
+
+    .footer-brand {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <a class="back-link" href="https://kodo-ai.net">
+      ← KODO-AIトップに戻る
+    </a>
+    <p class="brand">KODO-AI</p>
+    <h1>プライバシーポリシー</h1>
+    <p class="subtitle">Privacy Policy</p>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <p class="updated-date">最終更新日：2026年6月2日　／　発効日：2026年6月2日</p>
+
+    <div class="intro">
+      本プライバシーポリシーは、KODO-AI（以下「当方」）が開発・提供するiOSアプリおよびウェブサービス（以下「本サービス」）における個人情報および利用データの取り扱いについて説明するものです。本サービスをご利用いただくことで、本ポリシーに同意したものとみなします。
+    </div>
+
+    <!-- 1. 対象サービス -->
+    <div class="section">
+      <p class="section-number">Section 01</p>
+      <h2>本ポリシーの対象サービス</h2>
+      <p>本ポリシーは、KODO-AIが提供する以下のサービスに適用されます。</p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>アプリ名</th>
+            <th>プラットフォーム</th>
+            <th>App Store</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ファミリーイベントNOTE（FamNote）</td>
+            <td>iOS</td>
+            <td><a href="https://apps.apple.com/jp/app/id6772443142" target="_blank" rel="noopener" style="color:var(--accent);">App Store</a></td>
+          </tr>
+        </tbody>
+      </table>
+      <p>今後リリースするアプリも本ポリシーの対象となります。</p>
+    </div>
+
+    <!-- 2. 収集する情報 -->
+    <div class="section">
+      <p class="section-number">Section 02</p>
+      <h2>収集する情報</h2>
+      <p>当方は、アプリの機能提供および広告配信のために以下のデータを取り扱います。</p>
+
+      <div class="info-card">
+        <p class="info-card-title">📱 ローカル保存データ</p>
+        <p>カレンダーイベント・タスク・メンバー設定など、アプリ内で入力したデータはお使いのデバイス内にのみ保存されます。当方のサーバーや外部へ送信されることはありません。<span class="app-tag">FamNote</span></p>
+      </div>
+
+      <div class="info-card">
+        <p class="info-card-title">📣 広告関連データ（Google AdMob）</p>
+        <p>広告表示のため Google AdMob SDK を使用しています。App Tracking Transparency（ATT）でお客様が追跡を許可した場合、広告識別子（IDFA）・デバイス情報・おおよその位置情報が広告配信に利用されます。許可しない場合はパーソナライズされない広告が表示されます。<span class="app-tag">FamNote</span></p>
+      </div>
+
+      <div class="info-card">
+        <p class="info-card-title">💳 購入情報（Apple StoreKit）</p>
+        <p>アプリ内購入はAppleのStoreKit経由で処理されます。決済情報は当方には送信・保存されず、Appleのプライバシーポリシーに従い管理されます。<span class="app-tag">FamNote</span></p>
+      </div>
+
+      <div class="info-card">
+        <p class="info-card-title">🔔 通知</p>
+        <p>お客様が許可した場合に限り、イベント・タスクの通知を送信します。通知の許可はいつでもデバイスの設定から変更できます。</p>
+      </div>
+    </div>
+
+    <!-- 3. 情報の利用目的 -->
+    <div class="section">
+      <p class="section-number">Section 03</p>
+      <h2>情報の利用目的</h2>
+      <p>取得した情報は、以下の目的のみに利用します。</p>
+      <ul>
+        <li>アプリ機能（カレンダー・タスク管理・通知など）の提供</li>
+        <li>広告の表示および広告効果の測定</li>
+        <li>アプリ内購入の処理および復元</li>
+        <li>アプリの品質向上・不具合対応</li>
+      </ul>
+    </div>
+
+    <!-- 4. 第三者への情報提供 -->
+    <div class="section">
+      <p class="section-number">Section 04</p>
+      <h2>第三者への情報提供</h2>
+      <p>当方は、お客様の個人情報を第三者に販売・賃貸することはありません。ただし、以下のサービスとデータを共有する場合があります。</p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>サービス</th>
+            <th>目的</th>
+            <th>プライバシーポリシー</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Google AdMob</td>
+            <td>広告配信・効果測定</td>
+            <td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener" style="color:var(--accent);">Google ポリシー</a></td>
+          </tr>
+          <tr>
+            <td>Apple StoreKit</td>
+            <td>アプリ内購入処理</td>
+            <td><a href="https://www.apple.com/jp/legal/privacy/" target="_blank" rel="noopener" style="color:var(--accent);">Apple ポリシー</a></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="highlight">
+        <p><strong>アプリ内で入力したデータ（カレンダー・タスクなど）は、いかなる第三者とも共有されません。</strong>これらのデータはデバイス内にのみ存在します。</p>
+      </div>
+    </div>
+
+    <!-- 5. App Tracking Transparency -->
+    <div class="section">
+      <p class="section-number">Section 05</p>
+      <h2>App Tracking Transparency（ATT）</h2>
+      <p>当方のアプリはAppleのApp Tracking Transparency（ATT）フレームワークに準拠しており、広告識別子（IDFA）にアクセスする前にお客様の許可を求めます。</p>
+      <ul>
+        <li><strong>許可した場合：</strong>お客様の興味・関心に合わせたパーソナライズ広告が表示されます。</li>
+        <li><strong>許可しない場合：</strong>パーソナライズされない広告が表示されます。アプリ機能には影響しません。</li>
+      </ul>
+      <p>設定はiPhoneの「設定」→「プライバシーとセキュリティ」→「トラッキング」からいつでも変更できます。</p>
+    </div>
+
+    <!-- 6. データの保存と削除 -->
+    <div class="section">
+      <p class="section-number">Section 06</p>
+      <h2>データの保存と削除</h2>
+      <p>アプリ内データはデバイス内にのみ保存されます。アプリをアンインストールすることで、これらのデータはデバイスから完全に削除されます。</p>
+      <p>広告関連のデータについては、各サービス（Google・Apple）のポリシーに従い管理されます。</p>
+    </div>
+
+    <!-- 7. お子様のプライバシー -->
+    <div class="section">
+      <p class="section-number">Section 07</p>
+      <h2>お子様のプライバシー</h2>
+      <p>当方のサービスは13歳未満のお子様を対象としていません。万が一13歳未満のお子様から個人情報を意図せず収集したと判明した場合、速やかに削除するための措置を講じます。</p>
+    </div>
+
+    <!-- 8. ポリシーの変更 -->
+    <div class="section">
+      <p class="section-number">Section 08</p>
+      <h2>プライバシーポリシーの変更</h2>
+      <p>本ポリシーは必要に応じて更新することがあります。変更があった場合は、本ページ上部の「最終更新日」を更新してお知らせします。定期的にご確認いただくことをお勧めします。</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- CONTACT -->
+    <div class="contact-card">
+      <h3>お問い合わせ</h3>
+      <p>プライバシーに関するご質問・ご要望は、下記メールアドレスまでお気軽にお問い合わせください。</p>
+      <a class="contact-email" href="mailto:ravencrow080@gmail.com">
+        ✉️ ravencrow080@gmail.com
+      </a>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p class="footer-brand">KODO-AI</p>
+    <p style="margin-bottom:8px;">© 2026 KODO-AI. All rights reserved.</p>
+    <p>
+      <a href="https://kodo-ai.net">トップページ</a>
+      &nbsp;·&nbsp;
+      <a href="https://kodo-ai.net/famnote/">ファミリーイベントNOTE</a>
+      &nbsp;·&nbsp;
+      <a href="mailto:ravencrow080@gmail.com">お問い合わせ</a>
+    </p>
+  </footer>
+
+</body>
+</html>
