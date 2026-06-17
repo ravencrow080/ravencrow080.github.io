@@ -3,48 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Articles | AI × 個人開発の実践記録 — KODO-AI</title>
-  <meta name="description" content="元ゲームエンジニアがClaude Code × AIで実践する個人開発の記録。非エンジニアでもアプリが作れる時代の、リアルな開発ノウハウを発信。">
-  <meta name="keywords" content="個人開発,Claude Code,AI開発,非エンジニア,アプリ開発,高速プロトタイプ,SwiftUI,iOS開発">
-  <link rel="canonical" href="https://kodo-ai.net/articles/">
+  <title>KODO-AI | 個人開発 × AI — Claude Codeでアプリをつくる</title>
+  <meta name="description" content="エンジニアじゃなくても、アプリはつくれる。Claude Code × AIで高速プロトタイプを実践する元ゲームエンジニアの個人開発サイト。iOSアプリの企画・開発情報を発信中。">
+  <meta name="keywords" content="個人開発,AI開発,Claude Code,iOSアプリ,SwiftUI,プロトタイプ,高速開発,非エンジニア,アプリ開発,CodeX,AI個人開発">
+  <link rel="canonical" href="https://kodo-ai.net/">
 
   <!-- OGP -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://kodo-ai.net/articles/">
-  <meta property="og:title" content="Articles | AI × 個人開発の実践記録 — KODO-AI">
-  <meta property="og:description" content="元ゲームエンジニアがClaude Code × AIで実践する個人開発の記録。非エンジニアでもアプリが作れる時代の、リアルな開発ノウハウを発信。">
+  <meta property="og:url" content="https://kodo-ai.net/">
+  <meta property="og:title" content="KODO-AI | 個人開発 × AI — Claude Codeでアプリをつくる">
+  <meta property="og:description" content="エンジニアじゃなくても、アプリはつくれる。Claude Code × AIで高速プロトタイプを実践する元ゲームエンジニアの個人開発サイト。">
   <meta property="og:site_name" content="KODO-AI">
   <meta property="og:locale" content="ja_JP">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Articles | AI × 個人開発の実践記録 — KODO-AI">
-  <meta name="twitter:description" content="元ゲームエンジニアがClaude Code × AIで実践する個人開発の記録。非エンジニアでもアプリが作れる時代のリアルな開発ノウハウ。">
-
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebPage",
-      "@id": "https://kodo-ai.net/articles/",
-      "url": "https://kodo-ai.net/articles/",
-      "name": "Articles | AI × 個人開発の実践記録",
-      "description": "元ゲームエンジニアがClaude Code × AIで実践する個人開発の記録",
-      "inLanguage": "ja",
-      "isPartOf": { "@id": "https://kodo-ai.net/#website" }
-    },
-    {
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://kodo-ai.net/" },
-        { "@type": "ListItem", "position": 2, "name": "Articles", "item": "https://kodo-ai.net/articles/" }
-      ]
-    }
-  ]
-}
-</script>
-
+  <meta name="twitter:title" content="KODO-AI | 個人開発 × AI — Claude Codeでアプリをつくる">
+  <meta name="twitter:description" content="エンジニアじゃなくても、アプリはつくれる。Claude Code × AIで高速プロトタイプを実践する元ゲームエンジニアの個人開発サイト。">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -137,121 +112,540 @@
       .nav-links li:not(:last-child):not(:nth-last-child(2)) { display: none; }
     }
 
-    /* ===== ARTICLES HERO ===== */
-    .articles-hero {
-      padding: 120px 24px 60px;
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 24px 80px;
       text-align: center;
-      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
     }
 
-    .articles-hero .section-eyebrow {
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    /* ドットグリッドパターン */
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
+      background-size: 32px 32px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+    }
+
+    /* グロー効果 */
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      width: 800px;
+      height: 800px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,149,255,0.16) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -60%);
+    }
+
+    .glow-purple {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,64,200,0.14) 0%, transparent 70%);
+      bottom: -100px;
+      right: -100px;
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0,149,255,0.08);
+      border: 1px solid rgba(0,149,255,0.25);
+      color: var(--accent);
+      padding: 7px 18px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 32px;
+      letter-spacing: 0.3px;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero h1 {
+      position: relative;
+      font-size: clamp(52px, 12vw, 96px);
+      font-weight: 900;
+      letter-spacing: -3px;
+      line-height: 1;
+      margin-bottom: 8px;
+      color: var(--white);
+    }
+
+    .hero h1 .gradient-text {
+      background: linear-gradient(135deg, #0050FF 0%, #0095FF 35%, #40D8FF 70%, #FFFFFF 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 5s linear infinite;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .hero-sub {
+      position: relative;
+      font-size: clamp(14px, 2vw, 17px);
+      color: var(--muted);
+      margin-top: 20px;
+      margin-bottom: 48px;
+      line-height: 1.8;
+      max-width: 440px;
+    }
+
+    .hero-actions {
+      position: relative;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: var(--white);
+      font-size: 15px;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 32px rgba(0,149,255,0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0,149,255,0.45);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted2);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .hero-scroll:hover { color: var(--muted); }
+
+    .scroll-line {
+      width: 1px;
+      height: 32px;
+      background: linear-gradient(to bottom, var(--muted2), transparent);
+      animation: scrollDown 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollDown {
+      0% { opacity: 0; transform: scaleY(0); transform-origin: top; }
+      50% { opacity: 1; transform: scaleY(1); transform-origin: top; }
+      100% { opacity: 0; transform: scaleY(1); transform-origin: bottom; }
+    }
+
+    /* ===== SECTION COMMONS ===== */
+    section {
+      padding: 100px 24px;
+    }
+
+    .section-inner {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .section-eyebrow {
       font-size: 12px;
       font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
 
-    .articles-hero h1 {
-      font-size: clamp(36px, 8vw, 64px);
+    .section-title {
+      font-size: clamp(28px, 5vw, 40px);
       font-weight: 900;
       color: var(--white);
-      letter-spacing: -2px;
-      line-height: 1.1;
+      letter-spacing: -1px;
+      line-height: 1.15;
       margin-bottom: 16px;
     }
 
-    .articles-hero p {
-      font-size: clamp(14px, 2vw, 17px);
+    .section-desc {
+      font-size: 15px;
       color: var(--muted);
       line-height: 1.8;
+      max-width: 480px;
     }
 
-    /* ===== SECTION COMMONS ===== */
-    .articles-main {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 80px 24px 120px;
+    /* ===== WORKS ===== */
+    #works {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
     }
 
-    /* ===== ARTICLES GRID ===== */
-    .articles-grid {
+    .works-header {
+      margin-bottom: 56px;
+    }
+
+    .apps-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 20px;
-      margin-top: 48px;
     }
 
-    .article-card {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+    .app-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 20px;
       padding: 28px;
       text-decoration: none;
-      transition: border-color 0.25s, transform 0.25s;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      transition: border-color 0.25s, transform 0.25s, background 0.25s;
+      position: relative;
+      overflow: hidden;
     }
 
-    .article-card:hover {
+    .app-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,149,255,0), transparent);
+      transition: background 0.3s;
+    }
+
+    .app-card:hover {
       border-color: var(--border-hover);
+      background: var(--surface2);
       transform: translateY(-4px);
     }
 
-    .article-card-tags {
+    .app-card:hover::before {
+      background: linear-gradient(90deg, transparent, rgba(0,149,255,0.5), transparent);
+    }
+
+    .app-card-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
       display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 20px;
+      flex-shrink: 0;
     }
 
-    .atag {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 100px;
-      background: var(--accent-dim);
-      color: var(--accent);
+    .app-card-icon.blue {
+      background: linear-gradient(135deg, #0050FF 0%, #40D8FF 100%);
     }
 
-    .article-card-title {
+    .app-card-icon.dim {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+    }
+
+    .app-card h3 {
       font-size: 17px;
-      font-weight: 800;
+      font-weight: 700;
       color: var(--white);
-      line-height: 1.4;
+      margin-bottom: 8px;
+      line-height: 1.3;
     }
 
-    .article-card-excerpt {
+    .app-card p {
       font-size: 13px;
       color: var(--muted);
-      line-height: 1.7;
+      line-height: 1.65;
       flex: 1;
     }
 
-    .article-card-footer {
+    .app-card-footer {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-top: 20px;
       padding-top: 16px;
       border-top: 1px solid var(--border);
-      margin-top: auto;
     }
 
-    .article-card-date {
-      font-size: 12px;
-      color: var(--muted2);
+    .app-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 100px;
     }
 
-    .article-card-arrow {
+    .app-tag.live {
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    .app-tag.soon {
+      color: var(--muted);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .app-arrow {
       color: var(--muted2);
       font-size: 16px;
       transition: transform 0.2s, color 0.2s;
     }
 
-    .article-card:hover .article-card-arrow {
-      transform: translateX(4px);
+    .app-card:hover .app-arrow {
+      transform: translate(3px, -3px);
       color: var(--accent);
+    }
+
+    .app-card.coming-soon {
+      cursor: default;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    /* ===== ABOUT ===== */
+    #about {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+    }
+
+    .about-text .section-desc {
+      max-width: none;
+    }
+
+    .about-text .section-desc + .section-desc {
+      margin-top: 16px;
+    }
+
+    .about-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 28px;
+    }
+
+    .stack-tag {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .stack-tag.highlight {
+      background: var(--accent-dim);
+      border-color: rgba(0,149,255,0.25);
+      color: var(--accent);
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .stat-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .stat-num {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -1px;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-num span {
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* ===== CONTACT ===== */
+    #contact {
+      background: var(--bg);
+    }
+
+    .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 56px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 300px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,149,255,0.6), transparent);
+    }
+
+    @media (max-width: 600px) {
+      .contact-card {
+        padding: 40px 24px;
+      }
+    }
+
+    .contact-card .section-title {
+      font-size: clamp(24px, 4vw, 32px);
+    }
+
+    .contact-card .section-desc {
+      max-width: 400px;
+      margin: 0 auto 36px;
+    }
+
+    .contact-links {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 12px 22px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .contact-link:hover {
+      transform: translateY(-2px);
+    }
+
+    .contact-link.email {
+      background: var(--accent);
+      color: var(--white);
+      box-shadow: 0 6px 24px rgba(0,149,255,0.3);
+    }
+
+    .contact-link.email:hover {
+      box-shadow: 0 10px 32px rgba(0,149,255,0.45);
+    }
+
+    .contact-link.store {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .contact-link.store:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.2);
     }
 
     /* ===== FOOTER ===== */
@@ -305,76 +699,379 @@
       footer { padding: 28px 20px; }
       .footer-brand { font-size: 15px; }
     }
+      /* ===== CONCEPT ===== */
+    #concept {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .concept-quote-wrap {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .concept-quote {
+      font-size: clamp(20px, 4vw, 30px);
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.5px;
+      line-height: 1.5;
+      margin-bottom: 24px;
+      position: relative;
+      padding-bottom: 24px;
+    }
+
+    .concept-quote::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 0;
+      width: 80px;
+      height: 2px;
+      background: linear-gradient(90deg, #0050FF, #40D8FF);
+      border-radius: 2px;
+    }
+
+    .concept-body {
+      font-size: clamp(14px, 2vw, 16px);
+      color: var(--muted);
+      line-height: 2;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .concept-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .concept-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 22px;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+
+    .concept-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-3px);
+    }
+
+    .concept-card-icon {
+      font-size: 26px;
+      margin-bottom: 14px;
+    }
+
+    .concept-card h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .concept-card p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    /* ===== ARTICLES PREVIEW ===== */
+    #articles { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .articles-preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+    .article-card { display: flex; flex-direction: column; gap: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 28px; text-decoration: none; transition: border-color 0.25s, transform 0.25s; }
+    .article-card:hover { border-color: var(--border-hover); transform: translateY(-4px); }
+    .article-card-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+    .atag { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 100px; background: var(--accent-dim); color: var(--accent); }
+    .article-card-title { font-size: 16px; font-weight: 800; color: var(--white); line-height: 1.4; }
+    .article-card-excerpt { font-size: 13px; color: var(--muted); line-height: 1.7; flex: 1; }
+    .article-card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--border); margin-top: auto; }
+    .article-card-date { font-size: 12px; color: var(--muted2); }
+    .article-card-arrow { color: var(--muted2); font-size: 16px; transition: transform 0.2s, color 0.2s; }
+    .article-card:hover .article-card-arrow { transform: translateX(4px); color: var(--accent); }
   </style>
+
+  <!-- JSON-LD 構造化データ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://kodo-ai.net/#website",
+        "url": "https://kodo-ai.net/",
+        "name": "KODO-AI",
+        "description": "個人開発 × AI — Claude Codeでアプリをつくる",
+        "inLanguage": "ja"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://kodo-ai.net/#person",
+        "name": "KODO-AI",
+        "url": "https://kodo-ai.net/",
+        "description": "元ゲーム開発エンジニア。Claude Code × AIで高速プロトタイプ開発を実践する個人開発者。エンジニアでなくてもアプリを作れることを発信中。",
+        "knowsAbout": [
+          "個人開発",
+          "AI開発",
+          "Claude Code",
+          "iOSアプリ開発",
+          "SwiftUI",
+          "高速プロトタイプ",
+          "ゲーム開発",
+          "ビジネスアプリ開発"
+        ],
+        "email": "mailto:ravencrow080@gmail.com"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
   <!-- ===== NAV ===== -->
   <nav>
-    <a href="/" class="nav-logo">KODO<span>-AI</span></a>
+    <a href="#" class="nav-logo">KODO<span>-AI</span></a>
     <ul class="nav-links">
-      <li><a href="/#works">Works</a></li>
-      <li><a href="/#about">About</a></li>
+      <li><a href="#works">Works</a></li>
+      <li><a href="#about">About</a></li>
       <li><a href="/articles/">Articles</a></li>
-      <li><a href="/#contact" class="nav-cta">お問い合わせ</a></li>
+      <li><a href="#contact" class="nav-cta">お問い合わせ</a></li>
     </ul>
   </nav>
 
-  <!-- ===== ARTICLES HERO ===== -->
-  <div class="articles-hero">
-    <nav class="breadcrumb" aria-label="パンくずリスト" style="font-size:12px; color:rgba(255,255,255,0.25); margin-bottom:24px;">
-      <a href="/" style="color:rgba(255,255,255,0.45); text-decoration:none;">ホーム</a>
-      <span style="margin:0 8px;">›</span>
-      Articles
-    </nav>
-    <p class="section-eyebrow">Articles</p>
-    <h1>Articles</h1>
-    <p>AI × 個人開発の実践記録</p>
-  </div>
-
-  <!-- ===== ARTICLES MAIN ===== -->
-  <main class="articles-main">
-    <div class="articles-grid">
-
-      <!-- 記事カード 1 -->
-      <a class="article-card" href="/articles/claude-code-subagent-01/">
-        <div class="article-card-tags">
-          <span class="atag">Claude Code</span>
-          <span class="atag">サブエージェント</span>
-          <span class="atag">高速開発</span>
-        </div>
-        <h3 class="article-card-title">Claude Codeのサブエージェントが「動くもの」の作り方を変える</h3>
-        <p class="article-card-excerpt">サブエージェントを使えば、一人でチームを組める。コーディング・SEO・品質チェック・ライティングを専門エージェントに分担させ、「動くもの」を最速で作る方法。</p>
-        <div class="article-card-footer">
-          <span class="article-card-date">2026年6月17日</span>
-          <span class="article-card-arrow">→</span>
-        </div>
-      </a>
-
-      <!-- 記事カード 2 -->
-      <a class="article-card" href="/articles/claude-code-trends-01/">
-        <div class="article-card-tags">
-          <span class="atag">Claude Code</span>
-          <span class="atag">AI開発</span>
-          <span class="atag">個人開発</span>
-        </div>
-        <h3 class="article-card-title">Claude Codeで個人開発はどう変わったか——2026年最新トレンドまとめ</h3>
-        <p class="article-card-excerpt">Claude Codeはもはや「エンジニアのツール」ではない。2026年、AIコーディングは非エンジニアの個人開発を根本から変えつつある。</p>
-        <div class="article-card-footer">
-          <span class="article-card-date">2026年6月17日</span>
-          <span class="article-card-arrow">→</span>
-        </div>
-      </a>
-
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="glow-purple"></div>
     </div>
-  </main>
+
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      iOS Developer &amp; AI
+    </div>
+
+    <h1>
+      <span class="gradient-text">KODO-AI</span>
+    </h1>
+
+    <p class="hero-sub">
+      エンジニアじゃなくても、アプリはつくれる。<br>
+      Claude Code × AIで動くものをゼロからつくる、<br>
+      個人開発の実践サイト。
+    </p>
+
+    <div class="hero-actions">
+      <a href="#works" class="btn-primary">
+        Apps を見る
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#about" class="btn-secondary">
+        About
+      </a>
+    </div>
+
+    <a href="#works" class="hero-scroll">
+      <div class="scroll-line"></div>
+      Scroll
+    </a>
+  </section>
+
+  <!-- ===== WORKS ===== -->
+  <section id="works">
+    <div class="section-inner">
+      <div class="works-header">
+        <p class="section-eyebrow">Works</p>
+        <h2 class="section-title">リリース済み・開発中のアプリ</h2>
+        <p class="section-desc">使いやすくて、日々の生活に溶け込むアプリを目指して開発しています。</p>
+      </div>
+
+      <div class="apps-grid">
+        <!-- FamNote -->
+        <a class="app-card" href="/famnote/">
+          <div class="app-card-icon blue">📅</div>
+          <h3>ファミリーイベントNOTE</h3>
+          <p>家族みんなの予定・タスク・準備をひとつのアプリで管理。日本の祝日対応、達成率ダッシュボード搭載。</p>
+          <div class="app-card-footer">
+            <span class="app-tag live">● iOS 公開中</span>
+            <span class="app-arrow">↗</span>
+          </div>
+        </a>
+
+        <!-- Coming Soon 1 -->
+        <div class="app-card coming-soon">
+          <div class="app-card-icon dim">＋</div>
+          <h3>Next App</h3>
+          <p>開発中のアプリです。近日公開予定。</p>
+          <div class="app-card-footer">
+            <span class="app-tag soon">Coming Soon</span>
+          </div>
+        </div>
+
+        <!-- Coming Soon 2 -->
+        <div class="app-card coming-soon">
+          <div class="app-card-icon dim">＋</div>
+          <h3>Next App</h3>
+          <p>開発中のアプリです。近日公開予定。</p>
+          <div class="app-card-footer">
+            <span class="app-tag soon">Coming Soon</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONCEPT ===== -->
+  <section id="concept">
+    <div class="section-inner">
+      <div class="concept-quote-wrap">
+        <p class="section-eyebrow">Concept</p>
+        <p class="concept-quote">「動くものにしか、人は興味を持たない」</p>
+        <p class="concept-body">
+          企画書も、思想も、理論も、誰も理解しない。<br>
+          だから、まず動くものをつくる。<br>
+          エンジニアじゃなくても、AIがある今なら、誰でもできる。
+        </p>
+      </div>
+      <div class="concept-cards">
+        <div class="concept-card">
+          <div class="concept-card-icon">⚡</div>
+          <h3>Claude Code × CodeX で高速開発</h3>
+          <p>AIとの対話でコードを生成。アイデアからプロトタイプまで、数日で動くものを作る開発スタイルを実践。</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-icon">📲</div>
+          <h3>エンジニアじゃなくても作れる</h3>
+          <p>元ゲームエンジニアの知見をベースに、コードを書けない社会人・学生でも実践できるAI開発を発信。</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-icon">🚀</div>
+          <h3>プロトタイプファースト</h3>
+          <p>完璧な設計より、動く試作品。ビジネスアプリのプロトタイプを高速で世に出し、反応を見てから磨く。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section id="about">
+    <div class="section-inner">
+      <div class="about-grid">
+        <div class="about-text">
+          <p class="section-eyebrow">About</p>
+          <h2 class="section-title">元ゲームエンジニア × AI個人開発</h2>
+          <p class="section-desc">
+            ゲーム開発エンジニアとして培った技術をベースに、現在はビジネスアプリの企画・開発をAIと共に行っています。
+          </p>
+          <p class="section-desc">
+            Claude Code × CodeXを併用した開発で、サービスプロトタイプを高速に立ち上げ。「まず動くものをつくる」という哲学で、社会人・学生向けにAI活用開発の知見を発信しています。
+          </p>
+          <div class="about-stack">
+            <span class="stack-tag highlight">Claude Code</span>
+            <span class="stack-tag highlight">CodeX</span>
+            <span class="stack-tag highlight">SwiftUI</span>
+            <span class="stack-tag highlight">iOS</span>
+            <span class="stack-tag">Firebase</span>
+            <span class="stack-tag">App Store</span>
+            <span class="stack-tag">元ゲームエンジニア</span>
+          </div>
+        </div>
+
+        <div class="about-stats">
+          <div class="stat-card">
+            <div class="stat-num">1<span>+</span></div>
+            <div class="stat-label">リリース済み<br>アプリ</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num"><span>元</span></div>
+            <div class="stat-label">ゲーム開発<br>エンジニア</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">AI<span>×</span></div>
+            <div class="stat-label">Claude Code<br>+ CodeX</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num"><span>高速</span></div>
+            <div class="stat-label">プロトタイプ<br>ファースト</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ARTICLES ===== -->
+  <section id="articles">
+    <div class="section-inner">
+      <div style="display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom:40px;">
+        <div>
+          <p class="section-eyebrow">Articles</p>
+          <h2 class="section-title">最新の記事</h2>
+        </div>
+        <a href="/articles/" style="font-size:14px; font-weight:600; color:var(--accent); text-decoration:none;">すべて見る →</a>
+      </div>
+      <div class="articles-preview-grid">
+        <a class="article-card" href="/articles/claude-code-subagent-01/">
+          <div class="article-card-tags">
+            <span class="atag">Claude Code</span>
+            <span class="atag">サブエージェント</span>
+            <span class="atag">高速開発</span>
+          </div>
+          <h3 class="article-card-title">Claude Codeのサブエージェントが「動くもの」の作り方を変える</h3>
+          <p class="article-card-excerpt">サブエージェントを使えば、一人でチームを組める。コーディング・SEO・品質チェック・ライティングを専門エージェントに分担させ、「動くもの」を最速で作る方法。</p>
+          <div class="article-card-footer">
+            <span class="article-card-date">2026年6月17日</span>
+            <span class="article-card-arrow">→</span>
+          </div>
+        </a>
+        <a class="article-card" href="/articles/claude-code-trends-01/">
+          <div class="article-card-tags">
+            <span class="atag">Claude Code</span>
+            <span class="atag">AI開発</span>
+            <span class="atag">個人開発</span>
+          </div>
+          <h3 class="article-card-title">Claude Codeで個人開発はどう変わったか——2026年最新トレンドまとめ</h3>
+          <p class="article-card-excerpt">Claude Codeはもはや「エンジニアのツール」ではない。2026年、AIコーディングは非エンジニアの個人開発を根本から変えつつある。</p>
+          <div class="article-card-footer">
+            <span class="article-card-date">2026年6月17日</span>
+            <span class="article-card-arrow">→</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact">
+    <div class="section-inner">
+      <div class="contact-card">
+        <p class="section-eyebrow">Contact</p>
+        <h2 class="section-title">お気軽にどうぞ</h2>
+        <p class="section-desc">
+          アプリへのご意見・ご要望・不具合報告など、<br>お気軽にご連絡ください。
+        </p>
+        <div class="contact-links">
+          <a href="mailto:ravencrow080@gmail.com" class="contact-link email">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            メールを送る
+          </a>
+          <a href="https://apps.apple.com/jp/developer/id6772443142" target="_blank" rel="noopener" class="contact-link store">
+            <svg width="16" height="16" viewBox="0 0 814 1000" fill="currentColor"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 405.8 0 261.6 0 124.8 0 56.3 21.7 9 65.3 9c43 0 107.7 56.3 107.7 73.2 0 23.4-73.6 83.7-73.6 191.3 0 98 60.6 201.6 145.6 238.9 85.1 37.2 150.6 35 216 31.3M413.4 270.6c0-75 20.8-233.4 88.4-233.4 55.7 0 80.8 80.2 80.8 145.8 0 109.4-53.2 211.5-80.8 218.3-26.2 6.5-88.4-90-88.4-130.7z"/></svg>
+            App Store
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- ===== FOOTER ===== -->
   <footer>
-    <a href="/" class="footer-brand">KODO<span>-AI</span></a>
+    <a href="#" class="footer-brand">KODO<span>-AI</span></a>
     <ul class="footer-links">
-      <li><a href="/#works">Works</a></li>
-      <li><a href="/#about">About</a></li>
+      <li><a href="#works">Works</a></li>
+      <li><a href="#about">About</a></li>
       <li><a href="/articles/">Articles</a></li>
       <li><a href="/privacy/">プライバシーポリシー</a></li>
       <li><a href="mailto:ravencrow080@gmail.com">お問い合わせ</a></li>
