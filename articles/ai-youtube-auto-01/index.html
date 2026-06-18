@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIで動画を自動生成してYouTubeに投稿した——Pythonパイプライン全記録 | KODO-AI</title>
+  <meta name="description" content="AIで台本生成・音声合成・スライド作成・動画エンコード・YouTube投稿まで完全自動化した検証記録。Anthropic API × DALL-E 3 × gTTS × YouTube Data API v3の構成と実際の所要時間・コストを公開。">
+  <meta name="keywords" content="動画自動生成,AI動画,YouTube自動投稿,Python動画生成,Claude API,DALL-E 3,gTTS,YouTube Data API">
+  <link rel="canonical" href="https://kodo-ai.net/articles/ai-youtube-auto-01/">
+
+  <!-- OGP -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://kodo-ai.net/articles/ai-youtube-auto-01/">
+  <meta property="og:title" content="AIで動画を自動生成してYouTubeに投稿してみた——Python × Claude × DALL-E パイプライン全記録">
+  <meta property="og:description" content="AIで台本生成・音声合成・スライド作成・動画エンコード・YouTube投稿まで完全自動化した検証記録。所要時間77秒、コスト$0.16の内訳を公開。">
+  <meta property="og:site_name" content="KODO-AI">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:image" content="https://kodo-ai.net/ogp.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="https://kodo-ai.net/ogp.png">
+  <meta property="article:published_time" content="2026-06-18T00:00:00+09:00">
+  <meta property="article:author" content="KODO-AI">
+  <meta property="article:tag" content="AI自動化">
+  <meta property="article:tag" content="動画生成">
+  <meta property="article:tag" content="YouTube API">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AIで動画を自動生成してYouTubeに投稿してみた——Python × Claude × DALL-E パイプライン全記録">
+  <meta name="twitter:description" content="台本からYouTube投稿まで77秒で完全自動化。Anthropic API × DALL-E 3 × gTTS × YouTube Data API v3の構成と実コストを公開。">
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://kodo-ai.net/articles/ai-youtube-auto-01/",
+      "headline": "AIで動画を自動生成してYouTubeに投稿してみた——Python × Claude × DALL-E パイプライン全記録",
+      "description": "AIで台本生成・音声合成・スライド作成・動画エンコード・YouTube投稿まで完全自動化した検証記録。Anthropic API × DALL-E 3 × gTTS × YouTube Data API v3の構成と実際の所要時間・コストを公開。",
+      "datePublished": "2026-06-18T00:00:00+09:00",
+      "dateModified": "2026-06-18T00:00:00+09:00",
+      "author": { "@id": "https://kodo-ai.net/#person" },
+      "publisher": { "@id": "https://kodo-ai.net/#person" },
+      "url": "https://kodo-ai.net/articles/ai-youtube-auto-01/",
+      "inLanguage": "ja",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://kodo-ai.net/ogp.png",
+        "width": 1200,
+        "height": 630
+      },
+      "isPartOf": { "@id": "https://kodo-ai.net/articles/" },
+      "keywords": ["動画自動生成", "AI動画", "YouTube自動投稿", "Python動画生成", "Claude API", "DALL-E 3", "gTTS", "YouTube Data API", "個人開発", "AI開発"]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://kodo-ai.net/" },
+        { "@type": "ListItem", "position": 2, "name": "Articles", "item": "https://kodo-ai.net/articles/" },
+        { "@type": "ListItem", "position": 3, "name": "AIで動画を自動生成してYouTubeに投稿してみた", "item": "https://kodo-ai.net/articles/ai-youtube-auto-01/" }
+      ]
+    }
+  ]
+}
+</script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #04080F;
+      --surface: #080F1A;
+      --surface2: #0D1625;
+      --border: rgba(0,149,255,0.1);
+      --border-hover: rgba(0,149,255,0.4);
+      --accent: #0095FF;
+      --accent-bright: #40D8FF;
+      --accent-dim: rgba(0,149,255,0.12);
+      --deep-blue: #0050FF;
+      --white: #FFFFFF;
+      --text: rgba(255,255,255,0.9);
+      --muted: rgba(255,255,255,0.45);
+      --muted2: rgba(255,255,255,0.25);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans GB', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== NAV ===== */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(4, 8, 15, 0.78);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: 0.5px;
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-cta {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white) !important;
+      background: var(--accent);
+      padding: 8px 18px;
+      border-radius: 100px;
+      transition: opacity 0.2s !important;
+    }
+
+    .nav-cta:hover { opacity: 0.85; color: var(--white) !important; }
+
+    @media (max-width: 640px) {
+      nav { padding: 0 20px; }
+      .nav-links { gap: 20px; }
+      .nav-links li:not(:last-child):not(:nth-last-child(2)) { display: none; }
+    }
+
+    /* ===== ARTICLE STYLES ===== */
+    .article-hero {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 24px 56px;
+    }
+
+    .article-hero-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      padding-top: 64px;
+    }
+
+    .breadcrumb {
+      font-size: 12px;
+      color: var(--muted2);
+      margin-bottom: 24px;
+    }
+
+    .breadcrumb a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .breadcrumb a:hover { color: var(--white); }
+
+    .breadcrumb span { margin: 0 8px; }
+
+    .article-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .article-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 100px;
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+
+    .article-title {
+      font-size: clamp(22px, 5vw, 36px);
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -1px;
+      line-height: 1.3;
+      margin-bottom: 16px;
+    }
+
+    .article-meta {
+      font-size: 13px;
+      color: var(--muted2);
+    }
+
+    .article-body {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 64px 24px;
+    }
+
+    .article-body h2 {
+      font-size: clamp(18px, 3vw, 24px);
+      font-weight: 800;
+      color: var(--white);
+      margin: 48px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .article-body h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--white);
+      margin: 32px 0 12px;
+    }
+
+    .article-body p {
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.9;
+      margin-bottom: 20px;
+    }
+
+    .article-body ul, .article-body ol {
+      padding-left: 24px;
+      margin-bottom: 20px;
+    }
+
+    .article-body li {
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.8;
+      margin-bottom: 8px;
+    }
+
+    .article-body strong {
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    .article-body code {
+      background: var(--surface2);
+      color: var(--accent-bright);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+    }
+
+    .article-body pre {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 24px 0;
+      overflow-x: auto;
+    }
+
+    .article-body pre code {
+      background: none;
+      padding: 0;
+      color: var(--text);
+    }
+
+    /* コールアウト */
+    .callout {
+      background: var(--accent-dim);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 12px 12px 0;
+      padding: 16px 20px;
+      margin: 24px 0;
+    }
+
+    .callout p {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.8;
+      margin: 0;
+    }
+
+    /* 変化カード */
+    .change-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin: 16px 0;
+      transition: border-color 0.2s;
+    }
+
+    .change-card:hover {
+      border-color: var(--border-hover);
+    }
+
+    .change-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 800;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+
+    .change-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--white);
+      margin: 0 0 10px;
+    }
+
+    .change-card p {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.8;
+      margin: 0;
+    }
+
+    /* APIグリッド */
+    .api-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      margin: 24px 0;
+    }
+
+    .api-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      transition: border-color 0.2s;
+    }
+
+    .api-card:hover {
+      border-color: var(--border-hover);
+    }
+
+    .api-card-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+      font-family: 'SF Mono', monospace;
+    }
+
+    .api-card-role {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* コスト表 */
+    .cost-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 14px;
+    }
+
+    .cost-table th {
+      background: var(--surface2);
+      color: var(--muted);
+      font-weight: 600;
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cost-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    .cost-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .cost-table .cost-accent {
+      color: var(--accent-bright);
+      font-weight: 700;
+    }
+
+    /* ステップリスト */
+    .step-list {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 24px;
+      counter-reset: step-counter;
+    }
+
+    .step-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.8;
+      margin-bottom: 12px;
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      counter-increment: step-counter;
+    }
+
+    .step-list li::before {
+      content: counter(step-counter);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 800;
+      border-radius: 6px;
+      margin-top: 2px;
+    }
+
+    /* ===== CTA ===== */
+    .article-cta {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 56px 24px;
+      text-align: center;
+    }
+
+    .article-cta-inner {
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .article-cta h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .article-cta p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: var(--white);
+      font-size: 15px;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 32px rgba(0,149,255,0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0,149,255,0.45);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-brand {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+    }
+
+    .footer-brand span { color: var(--accent); }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--muted2);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--muted); }
+
+    .footer-copy {
+      width: 100%;
+      font-size: 12px;
+      color: var(--muted2);
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      margin-top: 4px;
+    }
+
+    @media (max-width: 600px) {
+      footer { padding: 28px 20px; }
+      .footer-brand { font-size: 15px; }
+    }
+
+    @media (max-width: 640px) {
+      .cost-table { font-size: 12px; min-width: 480px; }
+      .cost-table th, .cost-table td { padding: 8px 8px; }
+    }
+
+    @media (max-width: 460px) {
+      .step-list li { font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <nav>
+    <a href="/" class="nav-logo">KODO<span>-AI</span></a>
+    <ul class="nav-links">
+      <li><a href="/#works">Works</a></li>
+      <li><a href="/#about">About</a></li>
+      <li><a href="/articles/">Articles</a></li>
+      <li><a href="/#contact" class="nav-cta">お問い合わせ</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== ARTICLE HERO ===== -->
+  <header class="article-hero">
+    <div class="article-hero-inner">
+      <nav class="breadcrumb" aria-label="パンくずリスト">
+        <a href="/">ホーム</a>
+        <span>›</span>
+        <a href="/articles/">Articles</a>
+        <span>›</span>
+        AIで動画を自動生成してYouTubeに投稿してみた
+      </nav>
+
+      <div class="article-tags">
+        <span class="article-tag">AI自動化</span>
+        <span class="article-tag">動画生成</span>
+        <span class="article-tag">YouTube API</span>
+      </div>
+
+      <h1 class="article-title">AIで動画を自動生成して<br>YouTubeに投稿してみた<br>——Python × Claude × DALL-E パイプライン全記録</h1>
+
+      <p class="article-meta">2026-06-18 &nbsp;|&nbsp; 読了時間 約6分</p>
+    </div>
+  </header>
+
+  <!-- ===== ARTICLE BODY ===== -->
+  <main>
+    <article class="article-body">
+
+      <!-- リード -->
+      <p>コマンド1行で、台本が生成されて、ナレーション音声が作られて、スライドができて、動画が完成して、そのままYouTubeにアップロードされました。それが77秒で終わりました。「動くものをつくる」を信条にしてきた私ですら、正直、唸りました。専門学校生向けのIT教育コンテンツを量産するために始めたこの実験が、予想をはるかに超えた結果になったので、その全工程を公開します。</p>
+
+      <!-- h2: 何を作ったのか -->
+      <h2>何を作ったのか</h2>
+
+      <p>専門学校生向けのIT教育動画を自動で量産するパイプラインです。テーマを1行渡すだけで、台本生成から動画エンコード・YouTube投稿まですべてが自動で完結します。</p>
+
+      <div class="callout">
+        <p><strong>全工程の流れ：</strong> テーマ入力 → Claude Sonnet 4.6が台本とプロンプトをJSON生成 → gTTSが日本語ナレーション音声を生成 → DALL-E 3がAI背景画像を生成（Shorts時） → Pillowでスライド画像を合成 → ffmpegで動画エンコード → YouTube Data API v3でアップロード完了</p>
+      </div>
+
+      <p>通常の横型動画だけでなく、<strong>YouTube Shorts（縦型）にも対応</strong>しています。<code>--shorts</code>フラグを付けるだけで、解像度・レイアウト・動画尺がShortsの仕様に切り替わります。AI背景画像を使うかどうかも、コマンドライン引数で制御できる設計にしました。</p>
+
+      <p>個人開発の観点で言うと、この仕組みは「コンテンツ制作そのものをAPI呼び出しに変換した」ものです。動画制作のノウハウがなくても、テーマさえ決まれば動画が出てきます。非エンジニアでも使えるものを目指して構築しました。</p>
+
+      <!-- h2: 使ったAPIと役割 -->
+      <h2>使ったAPIと役割</h2>
+
+      <p>4つのAPIを組み合わせて動かしています。それぞれの役割と費用をまとめます。</p>
+
+      <div class="api-grid">
+        <div class="api-card">
+          <div class="api-card-name">Anthropic API</div>
+          <div class="api-card-role">Claude Sonnet 4.6で台本と画像プロンプトをJSONで生成。構造化されたデータとして出力するため、後工程のコードが非常にシンプルになる。</div>
+        </div>
+        <div class="api-card">
+          <div class="api-card-name">OpenAI API</div>
+          <div class="api-card-role">DALL-E 3でAI背景画像を生成。1枚あたり約$0.04。Shorts（4枚）では1本あたり約$0.16のコストがかかる。</div>
+        </div>
+        <div class="api-card">
+          <div class="api-card-name">YouTube Data API v3</div>
+          <div class="api-card-role">動画のアップロードと公開設定を担当。無料で使えるが、1日のアップロード上限は6本。クォータ管理に注意が必要。</div>
+        </div>
+        <div class="api-card">
+          <div class="api-card-name">gTTS</div>
+          <div class="api-card-role">Google Text-to-Speechを使った日本語ナレーション生成。完全無料。機械的な読み上げだが、教育コンテンツとして十分に実用的。</div>
+        </div>
+      </div>
+
+      <p>Claudeが返すJSONの中に、セクションごとのテキスト・ナレーション文・画像プロンプトがすべて入っています。後続の処理はこのJSONを読むだけでよく、<strong>AIが「設計書」を自動生成する構造</strong>です。コーディングの難易度が下がり、バグが入り込む余地も減ります。</p>
+
+      <!-- h2: 環境構築の手順 -->
+      <h2>環境構築の手順</h2>
+
+      <p>macOSでの構築手順です。Homebrewとpip3が入っていれば、30分程度で完了します。</p>
+
+      <h3>1. ffmpegのインストール</h3>
+
+      <pre><code>brew install ffmpeg</code></pre>
+
+      <h3>2. Pythonライブラリのインストール</h3>
+
+      <pre><code>pip install anthropic openai gTTS Pillow \
+  google-api-python-client google-auth-oauthlib python-dotenv</code></pre>
+
+      <h3>3. Google Cloud ConsoleでYouTube APIを有効化</h3>
+
+      <ol class="step-list">
+        <li>Google Cloud Console でプロジェクトを新規作成する</li>
+        <li>「APIとサービス」から YouTube Data API v3 を検索して有効化する</li>
+        <li>「認証情報」から OAuth 2.0 クライアントID（アプリの種類：デスクトップアプリ）を作成する</li>
+        <li>ダウンロードした JSON ファイルを <code>credentials/client_secret.json</code> として配置する</li>
+        <li>OAuth 同意画面のテストユーザーに自分のGoogleアカウントを追加する</li>
+      </ol>
+
+      <div class="callout">
+        <p><strong>OAuth同意画面の注意点：</strong> 同意画面が「テストモード」のままだと、登録済みのテストユーザー以外はアップロードできません。自分のアカウントをテストユーザーに追加してから実行してください。</p>
+      </div>
+
+      <h3>4. APIキーの設定</h3>
+
+      <p>プロジェクトルートに <code>.env</code> ファイルを作成して、以下を記述します。</p>
+
+      <pre><code>ANTHROPIC_API_KEY=sk-ant-xxxxx
+OPENAI_API_KEY=sk-xxxxx</code></pre>
+
+      <p>初回実行時はブラウザでのOAuth認証が求められます。認証後は <code>token.pickle</code> が生成されて、以降は自動認証です。このファイルには有効期限があるため、認証エラーが出たら削除して再実行すると解消します。</p>
+
+      <!-- h2: コマンド1行で動かす -->
+      <h2>コマンド1行で動かす</h2>
+
+      <p>基本的な使い方は3パターンです。すべて <code>pipeline.py</code> に引数を渡すだけで動きます。</p>
+
+      <h3>通常動画（横型・16:9）</h3>
+
+      <pre><code>python3 pipeline.py --topic "Pythonとは何か？初心者向け3分解説" --privacy private</code></pre>
+
+      <h3>YouTube Shorts（縦型・1080×1920 + AI背景画像）</h3>
+
+      <pre><code>python3 pipeline.py --shorts --with-images --image-style anime \
+  --topic "Claude Code で変わるコーディング！専門学校生必見" --privacy private</code></pre>
+
+      <h3>ローカルテスト（アップロードなし）</h3>
+
+      <pre><code>python3 pipeline.py --topic "テーマ名" --skip-upload</code></pre>
+
+      <p><code>--privacy private</code> を付けると非公開でアップロードされます。内容を確認してから公開に変更できるので、最初はこの設定で動かすのがおすすめです。<code>--skip-upload</code> はAPIキーなしで全工程のローカルテストができるため、動作確認に使います。</p>
+
+      <!-- h2: 検証結果 -->
+      <h2>検証結果</h2>
+
+      <p>2種類の動画で検証した結果を報告します。</p>
+
+      <div class="change-card">
+        <div class="change-num">1</div>
+        <h3>通常動画（横型）——77秒で完結</h3>
+        <p>テーマ「Pythonとは何か？初心者向け3分解説」で実行。台本はClaude Sonnet 4.6が7セクション構成で生成し、最終的な動画尺は2分50秒、ファイルサイズは3.3 MBで収まりました。台本入力からYouTubeアップロード完了まで<strong>76.7秒</strong>——コマンドを実行してからYouTubeのダッシュボードに動画が出現するまで、1分17秒です。</p>
+      </div>
+
+      <div class="change-card">
+        <div class="change-num">2</div>
+        <h3>YouTube Shorts（縦型 + AI背景画像）——約2分で完結</h3>
+        <p>テーマ「Claude Code で変わるコーディング！専門学校生必見」でShortsを生成。解像度1080×1920、動画尺は約37秒。DALL-E 3のアニメ風画像を4枚生成してスライドに合成し、最終ファイルサイズ1.3 MB。<strong>所要時間は約2分</strong>で完了。画像生成の分だけ時間がかかりますが、それでも人手で作れば数時間かかる作業が2分で終わります。</p>
+      </div>
+
+      <!-- h2: 実際にかかったコストと時間 -->
+      <h2>実際にかかったコストと時間</h2>
+
+      <p>1本あたりのAPIコストを整理しました。</p>
+
+      <div style="overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 24px 0;">
+        <table class="cost-table" style="margin: 0;">
+          <thead>
+            <tr>
+              <th>API</th>
+              <th>用途</th>
+              <th>コスト（通常動画）</th>
+              <th>コスト（Shorts+画像）</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Anthropic API</td>
+              <td>台本・プロンプト生成</td>
+              <td class="cost-accent">数円程度</td>
+              <td class="cost-accent">数円程度</td>
+            </tr>
+            <tr>
+              <td>OpenAI（DALL-E 3）</td>
+              <td>AI背景画像生成</td>
+              <td>なし</td>
+              <td class="cost-accent">約$0.16（4枚×$0.04）</td>
+            </tr>
+            <tr>
+              <td>YouTube Data API v3</td>
+              <td>動画アップロード</td>
+              <td class="cost-accent">無料</td>
+              <td class="cost-accent">無料</td>
+            </tr>
+            <tr>
+              <td>gTTS</td>
+              <td>音声合成</td>
+              <td class="cost-accent">無料</td>
+              <td class="cost-accent">無料</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>コスト的に最も大きいのはDALL-E 3の画像生成です。<code>--with-images</code> を省略すると、代わりにPillowでシンプルな背景を生成するため、AI画像なしのShortsであれば追加コストはほぼゼロです。</p>
+
+      <p>YouTube APIには<strong>1日あたりのアップロード上限が6本</strong>あります。大量テストは <code>--skip-upload</code> で動画ファイルだけをローカルに生成して、上限を温存することをおすすめします。</p>
+
+      <!-- h2: ハマりポイントと対策 -->
+      <h2>ハマりポイントと対策</h2>
+
+      <p>実際に構築する中で詰まったポイントを共有します。同じところで止まらないよう、先にまとめておきます。</p>
+
+      <h3>認証エラー：token.pickleの期限切れ</h3>
+      <p><code>token.pickle</code> はOAuth認証のトークンを保存したファイルです。有効期限が過ぎるとアップロード時にエラーになります。<code>token.pickle</code> を削除して再実行すると、ブラウザが開いて再認証できます。</p>
+
+      <h3>テストモードのOAuth同意画面</h3>
+      <p>Google Cloud Consoleで作成したOAuthクライアントは、デフォルトで「テストモード」です。この状態では、OAuth同意画面に登録したテストユーザー以外のアカウントではアップロードできません。自分のGoogleアカウントをテストユーザーとして追加してください。</p>
+
+      <h3>セキュリティ：.envのGitコミット禁止</h3>
+      <p><code>.env</code> にはAPIキーが入っています。絶対にGitにコミットしてはいけません。<code>.gitignore</code> に <code>.env</code> と <code>credentials/</code> と <code>token.pickle</code> を、最初に必ず追加してください。これを忘れると、公開リポジトリにAPIキーが露出します。</p>
+
+      <h3>音声品質：gTTSは機械的</h3>
+      <p>gTTSは無料で使えますが、読み上げが機械的です。教育コンテンツとして実用できるレベルですが、もっと自然な音声が必要な場合はVOICEVOX（無料・オープンソース）への切り替えを検討してください。コードの差し替え箇所は音声生成の1関数だけで済みます。</p>
+
+      <h3>動画品質の調整</h3>
+      <p>動画の速度・画質（CRF値）・fps は <code>config.yaml</code> で設定できます。コードを変更せずにパラメータを調整できるので、クオリティを上げたい場合はまずここを触ってください。</p>
+
+      <div class="callout">
+        <p><strong>全部まとめると：</strong> <code>.env</code> と <code>credentials/</code> と <code>token.pickle</code> を <code>.gitignore</code> に入れる。OAuth同意画面にテストユーザーを追加する。認証エラーは <code>token.pickle</code> 削除で解消。この3点を最初に押さえれば、あとはスムーズに動きます。</p>
+      </div>
+
+      <!-- h2: まとめ -->
+      <h2>まとめ——動くものをつくることの意味</h2>
+
+      <p>台本の入力からYouTube投稿まで、完全自動化に成功しました。通常動画は77秒、Shortsは約2分。コストは1本あたり数円から、AI背景画像ありでも$0.16程度です。なお、このパイプライン自体はClaude Codeを使って設計・実装しました。</p>
+
+      <p>私が「動くものにしか、人は興味を持たない」と言うとき、その意味は「完璧でなくていい、まず動かせ」ということです。このパイプラインも、最初から完璧な動画が出てくるわけではありません。gTTSの音声は機械的だし、スライドのデザインもシンプルです。でも、<strong>動いた。テーマを渡したら動画になった。YouTubeに上がった。</strong> この事実が、次の改善のモチベーションになります。</p>
+
+      <p>高速開発と個人開発の本質は、「完成させてから考える」ではなく、「動かしてから磨く」です。Claude Codeを使ったAI開発でも、このパイプラインでも、同じ考え方で進めています。エンジニアじゃなくても、コマンド1行で動画をYouTubeに上げられる時代になりました。ぜひ一度、試してみてください。</p>
+
+    </article>
+  </main>
+
+  <!-- ===== CTA ===== -->
+  <section class="article-cta">
+    <div class="article-cta-inner">
+      <h2>ほかの実践記録も読む</h2>
+      <p>KODO-AIでは個人開発 × AIの実践知を発信しています。<br>気になることがあればお気軽にどうぞ。</p>
+      <div class="cta-buttons">
+        <a href="/" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          TOPに戻る
+        </a>
+        <a href="mailto:ravencrow080@gmail.com" class="btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          お問い合わせ
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <a href="/" class="footer-brand">KODO<span>-AI</span></a>
+    <ul class="footer-links">
+      <li><a href="/articles/">Articles</a></li>
+      <li><a href="/#works">Works</a></li>
+      <li><a href="/#about">About</a></li>
+      <li><a href="/privacy/">プライバシーポリシー</a></li>
+      <li><a href="mailto:ravencrow080@gmail.com">お問い合わせ</a></li>
+    </ul>
+    <p class="footer-copy">© 2026 KODO-AI. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
