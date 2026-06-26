@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UnityでAI個人開発を始める【第2回】——ゼロから「短距離走ミニゲーム」を動かすまでに起きたこと全部 | KODO-AI</title>
+  <meta name="description" content="Unity 6 × iOS 環境構築から「短距離走ミニゲーム」完成まで。Claude Code と進めた実録レポート。セーフモード・Input System・NullReference など7つの詰まりポイントと解決法を全記録。">
+  <meta name="keywords" content="Unity iOS 開発,Claude Code Unity,Unity 6,個人開発 ゲーム,Unity エラー 解決,Unity 2D URP,ゲーム個人開発,AI個人開発,Unity Safe Mode,Unity NullReferenceException">
+  <link rel="canonical" href="https://kodo-ai.net/articles/unity-beginner-02/">
+
+  <!-- OGP -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://kodo-ai.net/articles/unity-beginner-02/">
+  <meta property="og:title" content="UnityでAI個人開発を始める【第2回】——ゼロから「短距離走ミニゲーム」を動かすまでに起きたこと全部">
+  <meta property="og:description" content="Unity 6 × iOS 環境構築から実録レポート。Claude Code と進めた7つの詰まりポイントと解決法を全記録。">
+  <meta property="og:site_name" content="KODO-AI">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="article:published_time" content="2026-06-26T00:00:00+09:00">
+  <meta property="article:author" content="KODO-AI">
+  <meta property="article:tag" content="Unity">
+  <meta property="article:tag" content="ゲーム開発">
+  <meta property="article:tag" content="個人開発">
+  <meta property="article:tag" content="Claude Code">
+  <meta property="article:tag" content="実録">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="UnityでAI個人開発を始める【第2回】——ゼロから「短距離走ミニゲーム」を動かすまでに起きたこと全部">
+  <meta name="twitter:description" content="Unity 6 × iOS の実録レポート。Claude Code と詰まった7つのエラーと全解決法。">
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://kodo-ai.net/articles/unity-beginner-02/",
+      "headline": "UnityでAI個人開発を始める【第2回】——ゼロから「短距離走ミニゲーム」を動かすまでに起きたこと全部",
+      "description": "Unity 6 × iOS 環境構築から実録レポート。Claude Code と進めた7つの詰まりポイントと解決法を全記録。",
+      "datePublished": "2026-06-26T00:00:00+09:00",
+      "dateModified": "2026-06-26T00:00:00+09:00",
+      "author": { "@id": "https://kodo-ai.net/#person" },
+      "publisher": { "@id": "https://kodo-ai.net/#person" },
+      "url": "https://kodo-ai.net/articles/unity-beginner-02/",
+      "inLanguage": "ja",
+      "isPartOf": { "@id": "https://kodo-ai.net/articles/" },
+      "keywords": ["Unity", "ゲーム開発", "個人開発", "Claude Code", "iOS開発", "Unity 6", "Unity エラー"]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://kodo-ai.net/" },
+        { "@type": "ListItem", "position": 2, "name": "Articles", "item": "https://kodo-ai.net/articles/" },
+        { "@type": "ListItem", "position": 3, "name": "UnityでAI個人開発を始める【第2回】", "item": "https://kodo-ai.net/articles/unity-beginner-02/" }
+      ]
+    }
+  ]
+}
+</script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #04080F;
+      --surface: #080F1A;
+      --surface2: #0D1625;
+      --border: rgba(0,149,255,0.1);
+      --border-hover: rgba(0,149,255,0.4);
+      --accent: #0095FF;
+      --accent-bright: #40D8FF;
+      --accent-dim: rgba(0,149,255,0.12);
+      --deep-blue: #0050FF;
+      --white: #FFFFFF;
+      --text: rgba(255,255,255,0.9);
+      --muted: rgba(255,255,255,0.45);
+      --muted2: rgba(255,255,255,0.25);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== NAV ===== */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(4,8,15,0.78);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: 0.5px;
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-cta {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white) !important;
+      background: var(--accent);
+      padding: 8px 18px;
+      border-radius: 100px;
+      transition: opacity 0.2s !important;
+    }
+
+    .nav-cta:hover { opacity: 0.85; color: var(--white) !important; }
+
+    @media (max-width: 640px) {
+      nav { padding: 0 20px; }
+      .nav-links { gap: 20px; }
+      .nav-links li:not(:last-child):not(:nth-last-child(2)) { display: none; }
+    }
+
+    /* ===== ARTICLE HERO ===== */
+    .article-hero {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 24px 56px;
+    }
+
+    .article-hero-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      padding-top: 64px;
+    }
+
+    .breadcrumb {
+      font-size: 12px;
+      color: var(--muted2);
+      margin-bottom: 24px;
+    }
+
+    .breadcrumb a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .breadcrumb a:hover { color: var(--white); }
+    .breadcrumb span { margin: 0 8px; }
+
+    .article-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .article-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 100px;
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+
+    .article-title {
+      font-size: clamp(22px, 5vw, 36px);
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -1px;
+      line-height: 1.3;
+      margin-bottom: 16px;
+    }
+
+    .article-meta {
+      font-size: 13px;
+      color: var(--muted2);
+    }
+
+    /* ===== ARTICLE BODY ===== */
+    .article-body {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 64px 24px;
+    }
+
+    .article-body h2 {
+      font-size: clamp(18px, 3vw, 24px);
+      font-weight: 800;
+      color: var(--white);
+      margin: 48px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .article-body h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--white);
+      margin: 32px 0 12px;
+    }
+
+    .article-body p {
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.9;
+      margin-bottom: 20px;
+    }
+
+    .article-body ul, .article-body ol {
+      padding-left: 24px;
+      margin-bottom: 20px;
+    }
+
+    .article-body li {
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.8;
+      margin-bottom: 8px;
+    }
+
+    .article-body strong {
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    .article-body code {
+      background: var(--surface2);
+      color: var(--accent-bright);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+    }
+
+    .article-body pre {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      overflow-x: auto;
+      margin: 12px 0 20px;
+    }
+
+    .article-body pre code {
+      background: none;
+      padding: 0;
+      font-size: 13px;
+      color: var(--accent-bright);
+      font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+      line-height: 1.7;
+    }
+
+    .article-body table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+      font-size: 14px;
+    }
+
+    .article-body th {
+      background: var(--surface2);
+      color: var(--muted);
+      font-weight: 700;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .article-body td {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .article-body tr:nth-child(even) td {
+      background: rgba(0,149,255,0.03);
+    }
+
+    /* カード共通 */
+    .trend-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin: 24px 0;
+      transition: border-color 0.2s;
+    }
+
+    .trend-card:hover { border-color: var(--border-hover); }
+
+    .trend-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 800;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+
+    .trend-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--white);
+      margin: 0 0 10px;
+    }
+
+    .trend-card p {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.8;
+      margin: 0;
+    }
+
+    /* BUGカード */
+    .bug-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .bug-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 800;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    .bug-label {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--accent-bright);
+      background: rgba(64,216,255,0.1);
+      padding: 3px 8px;
+      border-radius: 100px;
+    }
+
+    .bug-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--white);
+      margin: 0 0 12px;
+    }
+
+    .bug-card p {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+
+    .bug-card p:last-child { margin-bottom: 0; }
+
+    .bug-card pre {
+      margin: 8px 0 12px;
+    }
+
+    .bug-card table {
+      margin: 10px 0 14px;
+    }
+
+    /* チェックリスト */
+    .check-list {
+      list-style: none;
+      padding: 0;
+      margin: 16px 0 20px;
+    }
+
+    .check-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 6px 0;
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+
+    .check-list li::before {
+      content: "✓";
+      color: var(--accent);
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* コールアウト */
+    .callout {
+      background: var(--accent-dim);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 12px 12px 0;
+      padding: 16px 20px;
+      margin: 24px 0;
+    }
+
+    .callout p {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.8;
+      margin: 0;
+    }
+
+    /* 次回予告カード */
+    .next-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin: 40px 0 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .next-card-label {
+      flex-shrink: 0;
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--accent);
+      background: var(--accent-dim);
+      padding: 4px 10px;
+      border-radius: 100px;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .next-card-body p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .next-card-body strong { color: var(--white); font-weight: 700; }
+
+    /* ===== CTA ===== */
+    .article-cta {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 56px 24px;
+      text-align: center;
+    }
+
+    .article-cta-inner { max-width: 480px; margin: 0 auto; }
+
+    .article-cta h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .article-cta p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: var(--white);
+      font-size: 15px;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 32px rgba(0,149,255,0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0,149,255,0.45);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-brand {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+    }
+
+    .footer-brand span { color: var(--accent); }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--muted2);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--muted); }
+
+    .footer-copy {
+      width: 100%;
+      font-size: 12px;
+      color: var(--muted2);
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      margin-top: 4px;
+    }
+
+    @media (max-width: 600px) {
+      footer { padding: 28px 20px; }
+      .footer-brand { font-size: 15px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <nav>
+    <a href="/" class="nav-logo">KODO<span>-AI</span></a>
+    <ul class="nav-links">
+      <li><a href="/#works">Works</a></li>
+      <li><a href="/#about">About</a></li>
+      <li><a href="/articles/">Articles</a></li>
+      <li><a href="/#contact" class="nav-cta">お問い合わせ</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== ARTICLE HERO ===== -->
+  <header class="article-hero">
+    <div class="article-hero-inner">
+      <nav class="breadcrumb" aria-label="パンくずリスト">
+        <a href="/">ホーム</a>
+        <span>›</span>
+        <a href="/articles/">Articles</a>
+        <span>›</span>
+        UnityでAI個人開発を始める【第2回】
+      </nav>
+
+      <div class="article-tags">
+        <span class="article-tag">Unity</span>
+        <span class="article-tag">ゲーム開発</span>
+        <span class="article-tag">個人開発</span>
+        <span class="article-tag">Claude Code</span>
+        <span class="article-tag">実録</span>
+      </div>
+
+      <h1 class="article-title">UnityでAI個人開発を始める【第2回】<br>——ゼロから「短距離走ミニゲーム」を動かすまでに起きたこと全部</h1>
+      <p class="article-meta">2026-06-26 &nbsp;|&nbsp; 作業期間：6月22日〜26日 &nbsp;|&nbsp; 読了時間 約10分</p>
+    </div>
+  </header>
+
+  <!-- ===== ARTICLE BODY ===== -->
+  <main>
+    <article class="article-body">
+
+      <!-- リード -->
+      <p>きれいな成功談ではありません。</p>
+
+      <p>Unity 6 で iOS 向けゲームを個人で作る。それだけのことで、こんなに詰まるとは思っていませんでした。エラーは7本。半分はゲームロジックとは無関係の「環境系」でした。</p>
+
+      <p>でも全部解決しました。Claude Code と一緒に。</p>
+
+      <p>この記事は、<strong>6月22日から26日の5日間、短距離走ミニゲームを動かすまでに起きたことをすべて記録したものです。</strong> Unity を触り始めた人、iOS ゲームを個人で作ろうとしている人、Claude Code × Unity の組み合わせが気になっている人——同じところで詰まったとき、この記録が地図になれば十分です。</p>
+
+      <h2>今回作ったもの</h2>
+
+      <p>最終的に作ったのは「短距離走ミニゲーム」のテスト版です。本当に作りたいのは Eオリンピックゲーム（複数ミニゲーム × 世界ランキング）ですが、まずシンプルなゲームループが正しく動くかを検証しました。ゲームのシーケンスはこうなっています。</p>
+
+      <pre><code>① タイトル画面
+   「SPRINT GAME」  「START ボタン」
+        ↓ START を押す
+② カウントダウン（3・2・1・GO!）
+   「Click repeatedly!」ヒント表示
+        ↓ GO! 後に自動スタート
+③ プレイ
+   クリック連打で加速 → 摩擦で減速
+   タイマーが動作
+        ↓ ゴールライン到達
+④ ゴール演出（2.5秒）
+   「GOAL! ○○.○○ s」表示
+        ↓ 自動遷移
+⑤ ランキング
+   上位5件を表示（端末内保存）
+   「Play Again ボタン」
+        ↓ ①に戻る（ループ）</code></pre>
+
+      <h2>使用環境</h2>
+
+      <table>
+        <thead>
+          <tr><th>項目</th><th>内容</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>OS</td><td>macOS 26.5.1（Apple Silicon / arm64）</td></tr>
+          <tr><td>Xcode</td><td>26.5</td></tr>
+          <tr><td>Unity Hub</td><td>最新版</td></tr>
+          <tr><td>Unity Editor</td><td>6000.5.0f1（Unity 6）</td></tr>
+          <tr><td>テンプレート</td><td>2D (URP)</td></tr>
+          <tr><td>ターゲット</td><td>iOS（iPhone）</td></tr>
+          <tr><td>開発補助</td><td>Claude Code</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout">
+        <p>旧「2D」テンプレートは Unity 6 で非推奨です。「2D (URP)」を選ぶこと。また、<strong>File → Build Settings</strong> は Unity 6 から <strong>File → Build Profiles</strong> に名称変更されています。</p>
+      </div>
+
+      <h2>スクリプト構成</h2>
+
+      <p>今回実装したスクリプトは3本 + Editorツール1本です。</p>
+
+      <pre><code>Assets/
+├── Scripts/
+│   ├── GameManager.cs      ← ゲーム全体の状態管理・タイム計測・ランキング保存
+│   ├── PlayerController.cs ← タップ入力・プレイヤー移動
+│   └── UIManager.cs        ← 画面表示の切り替え
+└── Editor/
+    └── SprintSceneSetup.cs ← シーン自動構築ツール（開発専用）</code></pre>
+
+      <table>
+        <thead>
+          <tr><th>オブジェクト</th><th>役割</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Player（オレンジの四角）</td><td>タップで加速する走者</td></tr>
+          <tr><td>FinishLine（黄色の縦線）</td><td>ゴール判定ライン</td></tr>
+          <tr><td>Ground（緑の横線）</td><td>地面の見た目</td></tr>
+          <tr><td>Canvas → 各パネル</td><td>UI 全体</td></tr>
+          <tr><td>GameManager</td><td>ゲーム状態管理・タイム計測・ランキング</td></tr>
+          <tr><td>UIManager</td><td>各画面の表示制御</td></tr>
+        </tbody>
+      </table>
+
+      <h2>実装に必要な知識</h2>
+
+      <h3>Unity 基礎</h3>
+
+      <ul>
+        <li><strong>Hierarchy / Inspector / Project ウィンドウ</strong>の役割と操作</li>
+        <li><strong>GameObject・Component</strong> の概念（オブジェクトに機能を追加する仕組み）</li>
+        <li><strong>Rigidbody2D</strong>：物理演算コンポーネント（移動・速度の管理）</li>
+        <li><strong>BoxCollider2D</strong>：当たり判定</li>
+        <li><strong>Canvas / TextMeshPro</strong>：UI テキスト表示</li>
+      </ul>
+
+      <h3>MonoBehaviour のライフサイクル</h3>
+
+      <p>複数オブジェクト間では「全オブジェクトの Awake が終わってから全 Start が始まる」という順序が保証されています。これを知らないと参照エラーの原因が分からなくなります。</p>
+
+      <pre><code>Awake() → Start() → Update()（毎フレーム）</code></pre>
+
+      <h3>Coroutine（コルーチン）</h3>
+
+      <p>カウントダウンのような時間差処理に使います。</p>
+
+      <pre><code>IEnumerator CountdownRoutine()
+{
+    foreach (var count in new[] { "3", "2", "1", "GO!" })
+    {
+        uiManager.ShowCountdown(count);
+        yield return new WaitForSeconds(1f);
+    }
+}</code></pre>
+
+      <h3>enum でゲーム状態を管理</h3>
+
+      <pre><code>public enum GameState { Start, Countdown, Playing, Goal, Ranking }</code></pre>
+
+      <p>状態を enum で管理することで「今どのフェーズか」を明確に保てます。UIManager はこの状態に応じてパネルの表示・非表示を切り替えるだけになります。</p>
+
+      <h3>PlayerPrefs（端末内ランキング保存）</h3>
+
+      <pre><code>PlayerPrefs.SetFloat("Record_0", time);
+PlayerPrefs.Save();</code></pre>
+
+      <p>インターネット接続不要でシンプルに保存できます。今回はローカルランキングに使用しています。</p>
+
+      <h3>新 Input System</h3>
+
+      <p>Unity 6 では旧来の <code>Input.GetMouseButtonDown(0)</code> が使えない場合があります。<code>com.unity.inputsystem</code> パッケージを使った書き方が必要です。</p>
+
+      <pre><code>using UnityEngine.InputSystem;
+
+bool tapped = (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame) ||
+              (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasPressedThisFrame);</code></pre>
+
+      <p>マウス（PC・エディター）とタッチ（iPhone）を両方まとめて検出できます。</p>
+
+      <h3>Editor スクリプト</h3>
+
+      <p><code>Assets/Editor/</code> フォルダに置いたスクリプトは Unity メニューにツールを追加できます。今回は「シーンの全オブジェクトを自動生成・設定する」ツールを作り、毎回手作業でオブジェクトを配置する手間を省きました。スクリプトを修正するたびにシーンを組み直す手間がなくなり、開発サイクルが大幅に速くなります。</p>
+
+      <pre><code>[MenuItem("SprintGame/Setup Scene")]
+static void SetupScene()
+{
+    // GameObject の生成・Component のアタッチ・参照の設定を自動化
+}</code></pre>
+
+      <h2>実際に起きた不具合7本</h2>
+
+      <p>正直に言うと、今回の開発で詰まった時間の大半は「ゲームロジック」ではなく「Unity 6 のセットアップと参照管理」でした。以下、起きた順に全部記録します。</p>
+
+      <!-- BUG 1 -->
+      <div class="trend-card">
+        <div class="bug-header">
+          <div class="bug-num">1</div>
+          <span class="bug-label">BUG</span>
+        </div>
+        <h3>起動時に Safe Mode で開く</h3>
+        <pre><code>The project you are opening contains compilation errors.</code></pre>
+        <p><strong>原因：</strong>プロジェクトに含まれるパッケージのコンパイルエラー。</p>
+        <p><strong>対処：</strong>「Enter Safe Mode」を選択して起動 → 再起動で自動修復されます。</p>
+      </div>
+
+      <!-- BUG 2 -->
+      <div class="trend-card">
+        <div class="bug-header">
+          <div class="bug-num">2</div>
+          <span class="bug-label">BUG</span>
+        </div>
+        <h3>不要パッケージのコンパイルエラー（複数）</h3>
+        <p>2D URP テンプレートには Unity 6.5 で動作しないパッケージが複数含まれていました。</p>
+        <table>
+          <thead><tr><th>パッケージ</th><th>エラー内容</th></tr></thead>
+          <tbody>
+            <tr><td><code>com.unity.2d.tilemap.extras</code></td><td>TileTemplate 型が見つからない</td></tr>
+            <tr><td><code>com.unity.2d.aseprite</code></td><td>UnityEditor.Tilemaps 名前空間なし</td></tr>
+            <tr><td><code>com.unity.2d.tilemap</code></td><td>FileUtil.CombinePaths が存在しない</td></tr>
+            <tr><td><code>com.unity.2d.animation</code> ほか</td><td>今回のゲームで不使用</td></tr>
+          </tbody>
+        </table>
+        <p><strong>対処：</strong><code>Packages/manifest.json</code> から該当パッケージを手動で削除します。</p>
+        <pre><code>// 削除した行（今回のゲームには不要）
+"com.unity.2d.tilemap.extras": "8.0.3",
+"com.unity.2d.aseprite": "5.0.3",
+"com.unity.2d.tilemap": "1.0.0",
+"com.unity.2d.animation": "15.1.0",
+"com.unity.2d.psdimporter": "14.0.3",
+"com.unity.2d.spriteshape": "15.0.3",
+"com.unity.2d.tooling": "3.0.1"</code></pre>
+        <p><strong>ポイント：</strong>manifest.json を変更後、Unity エディターをクリックしてフォーカスを当てると自動で再インポートが始まります。</p>
+      </div>
+
+      <!-- BUG 3 -->
+      <div class="trend-card">
+        <div class="bug-header">
+          <div class="bug-num">3</div>
+          <span class="bug-label">BUG</span>
+        </div>
+        <h3>GameManager クラス名の衝突</h3>
+        <pre><code>error CS0101: The namespace '&lt;global namespace&gt;' already contains a definition for 'GameManager'</code></pre>
+        <p><strong>原因：</strong>Visual Scripting パッケージに同名の <code>GameManager</code> クラスが存在し、自作クラスと競合。</p>
+        <p><strong>対処：</strong>自作スクリプト全体を <code>namespace SprintGame { }</code> で囲みます。</p>
+        <pre><code>namespace SprintGame
+{
+    public class GameManager : MonoBehaviour { ... }
+}</code></pre>
+        <p>Add Component 時は「Game Manager (SprintGame)」を選択してください。</p>
+      </div>
+
+      <!-- BUG 4 -->
+      <div class="trend-card">
+        <div class="bug-header">
+          <div class="bug-num">4</div>
+          <span class="bug-label">BUG</span>
+        </div>
+        <h3>新 Input System エラー</h3>
+        <pre><code>InvalidOperationException: You are trying to read Input using the UnityEngine.Input class,
+but you have switched active Input handling to Input System package in Player Settings.</code></pre>
+        <p><strong>原因：</strong>Unity 6 は新 Input System がデフォルト設定。旧 <code>Input</code> クラスが使えません。</p>
+        <p><strong>対処：</strong><code>using UnityEngine.InputSystem;</code> を追加して入力検出コードを書き直します。</p>
+        <pre><code>bool tapped = (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame) ||
+              (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasPressedThisFrame);</code></pre>
+      </div>
+
+      <!-- BUG 5 -->
+      <div class="trend-card">
+        <div class="bug-header">
+          <div class="bug-num">5</div>
+          <span class="bug-label">BUG</span>
+        </div>
+        <h3>Edit モードで設定した参照が Play 時に失われる</h3>
+        <p><strong>症状：</strong>Editor スクリプトでオブジェクト間の参照を設定したのに、Play ボタンを押すと <code>NullReferenceException</code> が大量発生。</p>
+        <p><strong>原因：</strong>Unity の Editor スクリプトで <code>AddComponent</code> した直後にフィールドへ代入した参照が、Play モード開始時にシリアライズされないケースがある。<code>static Instance</code>（Singleton）パターンでの回避も今回の環境では安定しませんでした。</p>
+        <p><strong>対処（2段構え）：</strong></p>
+        <p>① <code>Start()</code> 内で名前検索 + <code>GetComponent</code> する。</p>
+        <pre><code>void Start()
+{
+    gm = GameObject.Find("GameManager")?.GetComponent&lt;GameManager&gt;();
+}</code></pre>
+        <p>② ゴール判定を <code>OnTriggerEnter2D</code>（当たり判定）から<strong>位置比較</strong>に切り替える。</p>
+        <pre><code>// 当たり判定より位置比較の方が今回は安定した
+if (playerTransform.position.x >= finishX)
+    SetState(GameState.Goal);</code></pre>
+        <p>当たり判定コールバックはコンポーネント参照の問題が重なると不安定になります。「ゴールラインを越えたか」は毎フレームの位置比較の方がシンプルで確実でした。</p>
+      </div>
+
+      <!-- BUG 6 -->
+      <div class="trend-card">
+        <div class="bug-header">
+          <div class="bug-num">6</div>
+          <span class="bug-label">BUG</span>
+        </div>
+        <h3>日本語テキストが表示されない</h3>
+        <pre><code>The character with Unicode value ！ was not found in the [LiberationSans SDF] font asset</code></pre>
+        <p><strong>原因：</strong>TextMeshPro のデフォルトフォント（LiberationSans SDF）は日本語非対応。</p>
+        <p><strong>対処：</strong>テスト版ではテキストを英語に変更して回避しました。本番では日本語フォント（Noto Sans JP など）をプロジェクトに追加し、TextMeshPro のデフォルトフォントとして設定する必要があります。</p>
+      </div>
+
+      <!-- BUG 7 -->
+      <div class="trend-card">
+        <div class="bug-header">
+          <div class="bug-num">7</div>
+          <span class="bug-label">BUG</span>
+        </div>
+        <h3>ボタンの onClick が Play 時に参照を失う</h3>
+        <p><strong>原因：</strong>Editor スクリプトで <code>btn.onClick.AddListener(() =&gt; method())</code> のようにラムダで設定した場合、Play 時にクロージャの参照がシリアライズされません。</p>
+        <p><strong>対処：</strong><code>UnityEditor.Events.UnityEventTools.AddPersistentListener</code> を使います。</p>
+        <pre><code>UnityEditor.Events.UnityEventTools.AddPersistentListener(btn.onClick, uiManager.OnRetryButton);</code></pre>
+        <p>これで Edit モードで設定したボタンイベントが Play 時も保持されます。</p>
+      </div>
+
+      <h2>検証できたこと</h2>
+
+      <p>この「短距離走ミニゲーム」で検証したゲームループ構造（State Machine + Coroutine + PlayerPrefs）は、<strong>ハンマー投げ・戦艦落とし</strong>など他のミニゲームにもそのまま応用できます。テスト版で土台を固めておくことが、本番開発の速度に直結します。</p>
+
+      <ul class="check-list">
+        <li>Unity 6.5 + iOS Build Support の環境構築（パッケージ整理が必要）</li>
+        <li>2D オブジェクトのタップ操作・物理移動</li>
+        <li>ゲーム状態管理（State Machine）</li>
+        <li>コルーチンによるカウントダウン演出</li>
+        <li>PlayerPrefs によるローカルランキング</li>
+        <li>ゲームループ（タイトル→カウントダウン→プレイ→ゴール→ランキング→繰り返し）</li>
+        <li>Editor スクリプトによるシーン自動構築</li>
+        <li>Claude Code との共同開発フロー（エラー対処・コード生成を AI と協力して実施）</li>
+      </ul>
+
+      <h2>伝えておきたいアドバイス</h2>
+
+      <div class="trend-card">
+        <div class="trend-num">1</div>
+        <h3>Unity 6 で 2D URP を使うなら、まず manifest.json を整理せよ</h3>
+        <p>2D URP テンプレートはデフォルトで多くのパッケージが入っていますが、Unity 6.5 時点で動作しないものが複数あります。最初にまとめて削除しておくと後が楽です。</p>
+      </div>
+
+      <div class="trend-card">
+        <div class="trend-num">2</div>
+        <h3>クラス名はユニークにするか namespace を使え</h3>
+        <p><code>GameManager</code> <code>UIManager</code> のような汎用的な名前はパッケージとの衝突リスクが高いです。プロジェクト固有の <code>namespace</code> で囲む習慣をつけましょう。衝突に気づかないまま進むと、謎の参照エラーに長時間悩まされます。</p>
+      </div>
+
+      <div class="trend-card">
+        <div class="trend-num">3</div>
+        <h3>Singleton は Unity 6 の Editor スクリプト環境では要注意</h3>
+        <p>静的インスタンスは便利ですが、Editor スクリプトで生成したオブジェクトと Play モードの組み合わせでは参照が失われる場合があります。<code>GameObject.Find</code> + <code>GetComponent</code> または <code>FindFirstObjectByType</code> を <code>Start</code> 内で使う方が安定します。</p>
+      </div>
+
+      <div class="trend-card">
+        <div class="trend-num">4</div>
+        <h3>ゴール判定は当たり判定より位置比較が安定することがある</h3>
+        <p><code>OnTriggerEnter2D</code> は強力ですが、コンポーネント参照の不安定さが重なると原因の特定が難しくなります。シンプルな「ラインを越えたか」の判定は毎フレームの位置比較で十分で、むしろ安定します。</p>
+      </div>
+
+      <div class="trend-card">
+        <div class="trend-num">5</div>
+        <h3>テスト版で「遊べる状態」を早く作ることが大事</h3>
+        <p>グラフィックやサウンドは後回しにして、まずゲームループ（開始→プレイ→終了→繰り返し）が動く状態を最優先に作ること。面白いかどうかの判断を早く下せるし、構造の問題を早期に発見できます。</p>
+      </div>
+
+      <div class="trend-card">
+        <div class="trend-num">6</div>
+        <h3>AI との共同開発について</h3>
+        <p>今回は Claude Code とペアで開発を進めました。エラーメッセージを貼り付けるだけで原因と対処を提案してもらえるため、Unity に慣れていない段階でも詰まり続けることなく前進できました。ただし<strong>AI の提案が必ずしも一発で正解とは限りません。</strong> 今回も参照エラーの解決に複数のアプローチを試しました。「提案を試す → 結果を見る → 次の手を考える」というサイクルで使うのが正解です。</p>
+      </div>
+
+      <h2>まとめ</h2>
+
+      <div class="callout">
+        <p><strong>「動くものにしか、人は興味を持たない」</strong> — グラフィックも音もない四角と線だけのゲームでも、ループが動いた瞬間に「作れる」という確信に変わります。まず遊べる状態を作ること。そこからが本当の開発です。</p>
+      </div>
+
+      <ul>
+        <li>Unity 6 + 2D URP テンプレートは最初にパッケージ整理が必要</li>
+        <li>クラス名は最初から <code>namespace</code> で囲む</li>
+        <li>Play モード時の参照は <code>Start()</code> 内で取得し直す</li>
+        <li>ゴール判定などシンプルな判定は位置比較でも十分安定する</li>
+        <li>Claude Code はエラー解決の相棒だが「提案を試す→結果を見る」サイクルで使う</li>
+      </ul>
+
+      <div class="next-card">
+        <span class="next-card-label">NEXT</span>
+        <div class="next-card-body">
+          <p><strong>第3回：Unity → Xcode → iPhone 実機テストの手順</strong><br>ビルドフロー・署名設定・よくある証明書エラーの対処法を実録で記録します。</p>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <!-- ===== CTA ===== -->
+  <section class="article-cta">
+    <div class="article-cta-inner">
+      <h2>もっと読む・つながる</h2>
+      <p>KODO-AIでは個人開発 × AIの実践知を発信しています。<br>気になることがあればお気軽にどうぞ。</p>
+      <div class="cta-buttons">
+        <a href="/articles/" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          記事一覧へ
+        </a>
+        <a href="mailto:ravencrow080@gmail.com" class="btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          お問い合わせ
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <a href="/" class="footer-brand">KODO<span>-AI</span></a>
+    <ul class="footer-links">
+      <li><a href="/articles/">Articles</a></li>
+      <li><a href="/#works">Works</a></li>
+      <li><a href="/#about">About</a></li>
+      <li><a href="/privacy/">プライバシーポリシー</a></li>
+      <li><a href="mailto:ravencrow080@gmail.com">お問い合わせ</a></li>
+    </ul>
+    <p class="footer-copy">© 2026 KODO-AI. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
