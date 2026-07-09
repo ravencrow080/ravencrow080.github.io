@@ -793,6 +793,21 @@
     .article-card-date { font-size: 12px; color: var(--muted2); }
     .article-card-arrow { color: var(--muted2); font-size: 16px; transition: transform 0.2s, color 0.2s; }
     .article-card:hover .article-card-arrow { transform: translateX(4px); color: var(--accent); }
+
+    /* ===== GUIDE / FAQ ===== */
+    #guide { background: var(--bg); border-top: 1px solid var(--border); }
+    .guide-intro { font-size: 14px; color: var(--muted); line-height: 2; max-width: 720px; margin-bottom: 48px; }
+    .guide-block { margin-bottom: 36px; }
+    .guide-block h3 { font-size: 18px; font-weight: 800; color: var(--white); margin-bottom: 12px; letter-spacing: -0.3px; line-height: 1.5; }
+    .guide-block p { font-size: 14px; color: var(--muted); line-height: 1.9; max-width: 720px; }
+    .faq-heading { margin-top: 56px; margin-bottom: 20px; }
+    .faq-list { display: flex; flex-direction: column; gap: 12px; }
+    .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 0 24px; }
+    .faq-item summary { list-style: none; cursor: pointer; padding: 18px 0; font-size: 14px; font-weight: 700; color: var(--white); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after { content: '+'; color: var(--accent); font-size: 20px; font-weight: 400; flex-shrink: 0; transition: transform 0.2s; }
+    .faq-item[open] summary::after { transform: rotate(45deg); }
+    .faq-item p { font-size: 13px; color: var(--muted); line-height: 1.85; padding-bottom: 20px; margin-top: -4px; }
   </style>
 
   <!-- JSON-LD 構造化データ -->
@@ -825,10 +840,60 @@
           "ビジネスアプリ開発"
         ],
         "email": "mailto:ravencrow080@gmail.com"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://kodo-ai.net/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "個人開発を始めるのにプログラミングの知識は必須ですか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "必須ではありません。Claude CodeやCodeXのようなAIコーディングツールを使えば、コードの詳細を理解していなくても、対話を通じてアプリの土台を作ることができます。ただしApp Storeの審査対応やアプリのアップデートなど、最低限の技術理解があると個人開発をスムーズに進められます。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "個人開発のアプリはどのくらいの期間で作れますか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "内容次第ですが、シンプルな機能に絞ったアプリであれば、企画からリリースまで数週間〜1ヶ月程度が目安です。AIを使った高速プロトタイピングにより、従来より大幅に開発期間を短縮できます。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "個人開発でアプリを収益化する方法は？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "iOSアプリであれば、アプリ内課金・サブスクリプション、広告掲載、買い切り販売などが代表的な収益化手法です。個人開発の場合はまず無料でユーザーを集め、継続利用されるアプリに育ててから収益化を検討するケースが多く見られます。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Claude CodeとCodeXの違いは何ですか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "どちらもAIを活用したコーディング支援ツールですが、Claude Codeはターミナル上で対話しながらコードベース全体を理解して開発を進められるのが特徴です。KODO-AIでは両者を併用し、それぞれの強みを活かしながら個人開発を進めています。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "個人開発を続けるモチベーションはどう保っていますか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "「動くものにしか、人は興味を持たない」という考え方を軸に、完璧を求めすぎず、まず小さく動くものをリリースすることを意識しています。実際にユーザーからの反応を得られると、それが次の個人開発の原動力になります。"
+            }
+          }
+        ]
       }
     ]
   }
   </script>
+  <!-- Start KARTE Tag -->
+  <script>!function(n){if(!window[n]){var o=window[n]=function(){var n=[].slice.call(arguments);return o.x?o.x.apply(0,n):o.q.push(n)};o.q=[],o.i=Date.now(),o.allow=function(){o.o="allow"},o.deny=function(){o.o="deny"}}}("krt")</script>
+  <script async src="https://cdn-edge.karte.io/2cd0c37a786105686e2102824028a571/edge.js"></script>
+  <!-- End KARTE Tag -->
 </head>
 <body>
 
@@ -838,6 +903,7 @@
     <ul class="nav-links">
       <li><a href="#works">Works</a></li>
       <li><a href="#about">About</a></li>
+      <li><a href="#guide">Guide</a></li>
       <li><a href="/articles/">Articles</a></li>
       <li><a href="#contact" class="nav-cta">お問い合わせ</a></li>
     </ul>
@@ -1002,6 +1068,72 @@
     </div>
   </section>
 
+  <!-- ===== GUIDE / FAQ ===== -->
+  <section id="guide">
+    <div class="section-inner">
+      <p class="section-eyebrow">Guide</p>
+      <h2 class="section-title">個人開発とは？AIで誰でもアプリが作れる時代のはじめかた</h2>
+      <p class="guide-intro">
+        「個人開発」とは、企業やチームに属さず、個人がアイデアの企画からデザイン、開発、リリース、運用までを一人で手がけるものづくりのスタイルのことです。かつて個人開発といえば、プログラミングスキルを持つエンジニアだけの特権というイメージがありました。しかし近年、Claude CodeやCodeXといったAIコーディングツールが登場したことで状況は大きく変わっています。コードを書いた経験がなくても、AIと対話しながらアプリやWebサービスを形にできる時代になりました。KODO-AIでは、この「AI時代の個人開発」を実際に手を動かしながら実践し、その過程で得た知見や失敗談を発信しています。
+      </p>
+
+      <div class="guide-block">
+        <h3>なぜ今、個人開発が注目されているのか</h3>
+        <p>
+          個人開発が注目される最大の理由は、AIによって開発のハードルが劇的に下がったことです。従来であれば数ヶ月かかっていた企画からプロトタイプ作成までの工程が、AIとの対話によって数日〜数週間に短縮できるようになりました。加えて、副業や複業として個人開発に取り組む人が増えていることも背景にあります。本業を持ちながら、隙間時間でアプリを作り、App Storeに公開して収益化を目指す。そんな働き方が、AIの力を借りることで現実的な選択肢になってきています。
+        </p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Claude CodeとCodeXを使った個人開発の進め方</h3>
+        <p>
+          KODO-AIでは、Claude CodeとCodeXを併用した個人開発を実践しています。まずアイデアを言語化し、AIとの壁打ちを通じて企画を固める。次にClaude Codeに要件を伝え、対話しながらSwiftUIでプロトタイプを組み上げる。動くものができたら実機で触ってみて違和感のある部分を修正し、App Store審査に向けて仕上げていく。この一連の流れをすべて一人で、しかも従来よりずっと短い期間で回せるのが、AIを活用した個人開発の最大の強みです。
+        </p>
+      </div>
+
+      <div class="guide-block">
+        <h3>個人開発でよくあるつまずきポイント</h3>
+        <p>
+          個人開発を始めた人がまずぶつかるのは、「何を作ればいいかわからない」という企画段階の壁です。次に、デザインができない、公開後にどう集客すればいいかわからない、一人で作業していてモチベーションが続かない、といった悩みが続きます。KODO-AIでは、AIを企画の壁打ち相手として使うこと、完璧なデザインより先に動くものを作ること、そして実際にリリースしてユーザーの反応を見ることを大切にしています。小さくても公開された実績が、次の個人開発を続ける原動力になります。
+        </p>
+      </div>
+
+      <div class="guide-block">
+        <h3>元ゲームエンジニアが個人開発で大切にしていること</h3>
+        <p>
+          運営者はもともとゲーム業界でエンジニアとして働いていました。その経験から強く感じているのが、「動くものにしか、人は興味を持たない」ということです。どれだけ優れた企画書や設計思想があっても、実際に触れるものがなければ誰にも伝わりません。だからこそ個人開発では、完璧な設計よりもまず動くプロトタイプを優先し、リリース後の反応を見ながら磨き上げていくスタイルを徹底しています。この哲学は、エンジニアでなくても、AIというパートナーがいれば誰でも実践できるものです。
+        </p>
+      </div>
+
+      <div class="faq-heading">
+        <p class="section-eyebrow">FAQ</p>
+        <h2 class="section-title" style="font-size:clamp(22px, 4vw, 28px);">個人開発によくある質問</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>個人開発を始めるのにプログラミングの知識は必須ですか？</summary>
+          <p>必須ではありません。Claude CodeやCodeXのようなAIコーディングツールを使えば、コードの詳細を理解していなくても、対話を通じてアプリの土台を作ることができます。ただしApp Storeの審査対応やアプリのアップデートなど、最低限の技術理解があると個人開発をスムーズに進められます。</p>
+        </details>
+        <details class="faq-item">
+          <summary>個人開発のアプリはどのくらいの期間で作れますか？</summary>
+          <p>内容次第ですが、KODO-AIで公開している「ファミリーイベントNOTE」のようなシンプルな機能に絞ったアプリであれば、企画からリリースまで数週間〜1ヶ月程度が目安です。AIを使った高速プロトタイピングにより、従来より大幅に開発期間を短縮できます。</p>
+        </details>
+        <details class="faq-item">
+          <summary>個人開発でアプリを収益化する方法は？</summary>
+          <p>iOSアプリであれば、アプリ内課金・サブスクリプション、広告掲載、買い切り販売などが代表的な収益化手法です。個人開発の場合はまず無料でユーザーを集め、継続利用されるアプリに育ててから収益化を検討するケースが多く見られます。</p>
+        </details>
+        <details class="faq-item">
+          <summary>Claude CodeとCodeXの違いは何ですか？</summary>
+          <p>どちらもAIを活用したコーディング支援ツールですが、Claude Codeはターミナル上で対話しながらコードベース全体を理解して開発を進められるのが特徴です。KODO-AIでは両者を併用し、それぞれの強みを活かしながら個人開発を進めています。</p>
+        </details>
+        <details class="faq-item">
+          <summary>個人開発を続けるモチベーションはどう保っていますか？</summary>
+          <p>「動くものにしか、人は興味を持たない」という考え方を軸に、完璧を求めすぎず、まず小さく動くものをリリースすることを意識しています。実際にユーザーからの反応を得られると、それが次の個人開発の原動力になります。</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== ARTICLES ===== -->
   <section id="articles">
     <div class="section-inner">
@@ -1111,6 +1243,7 @@
     <ul class="footer-links">
       <li><a href="#works">Works</a></li>
       <li><a href="#about">About</a></li>
+      <li><a href="#guide">Guide</a></li>
       <li><a href="/articles/">Articles</a></li>
       <li><a href="/privacy/">プライバシーポリシー</a></li>
       <li><a href="mailto:ravencrow080@gmail.com">お問い合わせ</a></li>
