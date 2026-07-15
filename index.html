@@ -462,6 +462,11 @@
       background: rgba(255,255,255,0.05);
     }
 
+    .app-tag.review {
+      color: var(--accent-bright);
+      background: rgba(64,216,255,0.12);
+    }
+
     .app-card.coming-soon {
       cursor: default;
       pointer-events: none;
@@ -1373,19 +1378,25 @@
           </div>
         </div>
 
-        <!-- Coming Soon 1 -->
-        <div class="app-card coming-soon">
-          <div class="app-card-icon dim">＋</div>
-          <h3>Next App</h3>
-          <p>開発中のアプリです。近日公開予定。</p>
+        <!-- ぼくの恐竜ずかん -->
+        <div class="app-card">
+          <div class="app-card-icon blue">🦕</div>
+          <h3>ぼくの恐竜ずかん</h3>
+          <p>探索して発見、クイズで学ぶ。子どもと育てる恐竜図鑑</p>
           <div class="app-learn">
             <p class="app-learn-label">学べること</p>
             <div class="app-learn-tags">
-              <span class="learn-tag">公開後に追加</span>
+              <span class="learn-tag">SwiftUI</span>
+              <span class="learn-tag">Claude Code</span>
+              <span class="learn-tag">子ども向けUI設計</span>
             </div>
           </div>
           <div class="app-card-footer">
-            <span class="app-tag soon">Coming Soon</span>
+            <span class="app-tag review">● 審査提出中</span>
+            <div class="app-card-actions">
+              <a href="/zukan/" class="app-mini-link">アプリを見る ↗</a>
+              <a href="/articles/zukan-dev-01/" class="app-mini-link accent">開発記事を読む →</a>
+            </div>
           </div>
         </div>
 
@@ -1644,6 +1655,19 @@
         <button type="button" class="article-tab" data-filter="engineer">エンジニア向け</button>
       </div>
       <div class="articles-preview-grid">
+        <a class="article-card" data-category="nonengineer" href="/articles/zukan-dev-01/">
+          <div class="article-card-tags">
+            <span class="atag">個人開発</span>
+            <span class="atag">iOS開発</span>
+            <span class="atag">SwiftUI</span>
+          </div>
+          <h3 class="article-card-title">子ども向け恐竜図鑑アプリ「ぼくの恐竜ずかん」をApp Storeへ申請しました</h3>
+          <p class="article-card-excerpt">4〜6歳向けの探索×クイズ型恐竜図鑑アプリを個人開発。学習ループの設計から難易度調整、App Store申請準備までをSwiftUI×Claude Codeで進めた実録レポート。</p>
+          <div class="article-card-footer">
+            <span class="article-card-date">2026年7月15日</span>
+            <span class="article-card-arrow">→</span>
+          </div>
+        </a>
         <a class="article-card" data-category="plan" href="/articles/claude-code-training-01/">
           <div class="article-card-tags">
             <span class="atag">Claude Code</span>

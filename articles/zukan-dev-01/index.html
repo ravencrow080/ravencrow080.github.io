@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>子ども向け恐竜図鑑アプリ「ぼくの恐竜ずかん」をApp Storeへ申請しました | KODO-AI</title>
+  <meta name="description" content="4〜6歳向けの探索×クイズ型恐竜図鑑アプリ「ぼくの恐竜ずかん」を個人開発。学習ループの設計から難易度調整、白背景画像の調整、App Store申請準備までをSwiftUI×Claude Codeで進めた実録レポート。">
+  <meta name="keywords" content="個人開発,AI個人開発,Claude Code,子ども向けアプリ,SwiftUI,iOSアプリ開発,恐竜図鑑,知育アプリ,App Store申請,非エンジニア,プロトタイプ,高速開発">
+  <link rel="canonical" href="https://kodo-ai.net/articles/zukan-dev-01/">
+
+  <!-- OGP -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://kodo-ai.net/articles/zukan-dev-01/">
+  <meta property="og:title" content="子ども向け恐竜図鑑アプリ「ぼくの恐竜ずかん」をApp Storeへ申請しました">
+  <meta property="og:description" content="4〜6歳向けの探索×クイズ型恐竜図鑑アプリを個人開発。学習ループの設計から難易度調整、App Store申請準備までをSwiftUI×Claude Codeで進めた実録レポート。">
+  <meta property="og:image" content="https://kodo-ai.net/articles/zukan-dev-01/images/AppIcon-1024.png">
+  <meta property="og:site_name" content="KODO-AI">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="article:published_time" content="2026-07-15T00:00:00+09:00">
+  <meta property="article:author" content="KODO-AI">
+  <meta property="article:tag" content="個人開発">
+  <meta property="article:tag" content="iOS開発">
+  <meta property="article:tag" content="SwiftUI">
+  <meta property="article:tag" content="子ども向けアプリ">
+  <meta property="article:tag" content="Claude Code">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="子ども向け恐竜図鑑アプリ「ぼくの恐竜ずかん」をApp Storeへ申請しました">
+  <meta name="twitter:description" content="4〜6歳向けの探索×クイズ型恐竜図鑑アプリを個人開発。学習ループ設計から難易度調整、App Store申請準備までの実録レポート。">
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://kodo-ai.net/articles/zukan-dev-01/",
+      "headline": "子ども向け恐竜図鑑アプリ「ぼくの恐竜ずかん」をApp Storeへ申請しました",
+      "description": "4〜6歳向けの探索×クイズ型恐竜図鑑アプリ「ぼくの恐竜ずかん」を個人開発。学習ループの設計から難易度調整、白背景画像の調整、App Store申請準備までをSwiftUI×Claude Codeで進めた実録レポート。",
+      "datePublished": "2026-07-15T00:00:00+09:00",
+      "dateModified": "2026-07-15T00:00:00+09:00",
+      "author": { "@id": "https://kodo-ai.net/#person" },
+      "publisher": { "@id": "https://kodo-ai.net/#person" },
+      "url": "https://kodo-ai.net/articles/zukan-dev-01/",
+      "inLanguage": "ja",
+      "isPartOf": { "@id": "https://kodo-ai.net/articles/" },
+      "keywords": ["個人開発", "iOS開発", "SwiftUI", "子ども向けアプリ", "Claude Code", "知育アプリ", "App Store申請"]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://kodo-ai.net/" },
+        { "@type": "ListItem", "position": 2, "name": "Articles", "item": "https://kodo-ai.net/articles/" },
+        { "@type": "ListItem", "position": 3, "name": "子ども向け恐竜図鑑アプリ「ぼくの恐竜ずかん」をApp Storeへ申請しました", "item": "https://kodo-ai.net/articles/zukan-dev-01/" }
+      ]
+    }
+  ]
+}
+</script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #04080F;
+      --surface: #080F1A;
+      --surface2: #0D1625;
+      --border: rgba(0,149,255,0.1);
+      --border-hover: rgba(0,149,255,0.4);
+      --accent: #0095FF;
+      --accent-bright: #40D8FF;
+      --accent-dim: rgba(0,149,255,0.12);
+      --deep-blue: #0050FF;
+      --white: #FFFFFF;
+      --text: rgba(255,255,255,0.9);
+      --muted: rgba(255,255,255,0.45);
+      --muted2: rgba(255,255,255,0.25);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== NAV ===== */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(4,8,15,0.78);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: 0.5px;
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-cta {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white) !important;
+      background: var(--accent);
+      padding: 8px 18px;
+      border-radius: 100px;
+      transition: opacity 0.2s !important;
+    }
+
+    .nav-cta:hover { opacity: 0.85; color: var(--white) !important; }
+
+    @media (max-width: 640px) {
+      nav { padding: 0 20px; }
+      .nav-links { gap: 20px; }
+      .nav-links li:not(:last-child):not(:nth-last-child(2)) { display: none; }
+    }
+
+    /* ===== ARTICLE HERO ===== */
+    .article-hero {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 24px 56px;
+    }
+
+    .article-hero-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      padding-top: 64px;
+    }
+
+    .breadcrumb {
+      font-size: 12px;
+      color: var(--muted2);
+      margin-bottom: 24px;
+    }
+
+    .breadcrumb a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .breadcrumb a:hover { color: var(--white); }
+    .breadcrumb span { margin: 0 8px; }
+
+    .article-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .article-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 100px;
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+
+    .article-title {
+      font-size: clamp(22px, 5vw, 36px);
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -1px;
+      line-height: 1.3;
+      margin-bottom: 16px;
+    }
+
+    .article-meta {
+      font-size: 13px;
+      color: var(--muted2);
+    }
+
+    /* ===== ARTICLE BODY ===== */
+    .article-body {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 64px 24px;
+    }
+
+    .article-body h2 {
+      font-size: clamp(18px, 3vw, 24px);
+      font-weight: 800;
+      color: var(--white);
+      margin: 48px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .article-body h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--white);
+      margin: 32px 0 12px;
+    }
+
+    .article-body p {
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.9;
+      margin-bottom: 20px;
+    }
+
+    .article-body ul, .article-body ol {
+      padding-left: 24px;
+      margin-bottom: 20px;
+    }
+
+    .article-body li {
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.8;
+      margin-bottom: 8px;
+    }
+
+    .article-body strong {
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    .article-body code {
+      background: var(--surface2);
+      color: var(--accent-bright);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+    }
+
+    .article-body table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+      font-size: 14px;
+    }
+
+    .article-body th {
+      background: var(--surface2);
+      color: var(--muted);
+      font-weight: 700;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .article-body td {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .article-body tr:nth-child(even) td {
+      background: rgba(0,149,255,0.03);
+    }
+
+    /* 画像 */
+    .article-img {
+      width: 100%;
+      display: block;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      margin: 24px 0 8px;
+    }
+
+    .article-img-caption {
+      font-size: 13px;
+      color: var(--muted2);
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .img-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 24px 0 8px;
+    }
+
+    .img-row .article-img { margin: 0; }
+
+    @media (max-width: 560px) {
+      .img-row { grid-template-columns: 1fr; }
+    }
+
+    /* カード共通 */
+    .trend-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin: 24px 0;
+      transition: border-color 0.2s;
+    }
+
+    .trend-card:hover { border-color: var(--border-hover); }
+
+    .trend-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 800;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+
+    .trend-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--white);
+      margin: 0 0 10px;
+    }
+
+    .trend-card p {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.8;
+      margin: 0 0 10px;
+    }
+
+    .trend-card p:last-child { margin-bottom: 0; }
+
+    /* チェックリスト */
+    .check-list {
+      list-style: none;
+      padding: 0;
+      margin: 16px 0 20px;
+    }
+
+    .check-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 6px 0;
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+
+    .check-list li::before {
+      content: "✓";
+      color: var(--accent);
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* コールアウト */
+    .callout {
+      background: var(--accent-dim);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 12px 12px 0;
+      padding: 16px 20px;
+      margin: 24px 0;
+    }
+
+    .callout p {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.8;
+      margin: 0;
+    }
+
+    /* ===== CTA ===== */
+    .article-cta {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 56px 24px;
+      text-align: center;
+    }
+
+    .article-cta-inner { max-width: 480px; margin: 0 auto; }
+
+    .article-cta h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .article-cta p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: var(--white);
+      font-size: 15px;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 32px rgba(0,149,255,0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0,149,255,0.45);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-brand {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+    }
+
+    .footer-brand span { color: var(--accent); }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--muted2);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--muted); }
+
+    .footer-copy {
+      width: 100%;
+      font-size: 12px;
+      color: var(--muted2);
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      margin-top: 4px;
+    }
+
+    @media (max-width: 600px) {
+      footer { padding: 28px 20px; }
+      .footer-brand { font-size: 15px; }
+    }
+  </style>
+  <!-- Start KARTE Tag -->
+  <script>!function(n){if(!window[n]){var o=window[n]=function(){var n=[].slice.call(arguments);return o.x?o.x.apply(0,n):o.q.push(n)};o.q=[],o.i=Date.now(),o.allow=function(){o.o="allow"},o.deny=function(){o.o="deny"}}}("krt")</script>
+  <script async src="https://cdn-edge.karte.io/81ed2e80636fa92a6735e5dacf1908da/edge.js"></script>
+  <!-- End KARTE Tag -->
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <nav>
+    <a href="/" class="nav-logo">KODO<span>-AI</span></a>
+    <ul class="nav-links">
+      <li><a href="/#works">Works</a></li>
+      <li><a href="/#about">About</a></li>
+      <li><a href="/articles/">Articles</a></li>
+      <li><a href="/#contact" class="nav-cta">お問い合わせ</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== ARTICLE HERO ===== -->
+  <header class="article-hero">
+    <div class="article-hero-inner">
+      <nav class="breadcrumb" aria-label="パンくずリスト">
+        <a href="/">ホーム</a>
+        <span>›</span>
+        <a href="/articles/">Articles</a>
+        <span>›</span>
+        子ども向け恐竜図鑑アプリ「ぼくの恐竜ずかん」をApp Storeへ申請しました
+      </nav>
+
+      <div class="article-tags">
+        <span class="article-tag">個人開発</span>
+        <span class="article-tag">iOS開発</span>
+        <span class="article-tag">SwiftUI</span>
+        <span class="article-tag">子ども向けアプリ</span>
+        <span class="article-tag">Claude Code</span>
+      </div>
+
+      <h1 class="article-title">子ども向け恐竜図鑑アプリ<br>「ぼくの恐竜ずかん」をApp Storeへ申請しました</h1>
+      <p class="article-meta">2026-07-15 &nbsp;|&nbsp; 読了時間 約8分</p>
+    </div>
+  </header>
+
+  <!-- ===== ARTICLE BODY ===== -->
+  <main>
+    <article class="article-body">
+
+      <!-- リード -->
+      <p><strong>4〜6歳ごろの子どもが、恐竜を探しながら学べるiPhoneアプリ「ぼくの恐竜ずかん」を個人開発し、App Store Connectへ審査提出しました。</strong> 広告なし・課金なし・外部サーバー送信なしという、子どもにそのまま渡せる設計にしています。この記事では、なぜこのアプリを作ったのか、どんな体験を目指したのか、開発中にどこで詰まってどう直したのかを、実際の画面と一緒に記録します。</p>
+
+      <img src="images/01_home.png" alt="ぼくの恐竜ずかんのホーム画面" class="article-img">
+      <p class="article-img-caption">ホーム画面。探索エネルギーとレベル、図鑑の進み具合が一目でわかる構成にしています。</p>
+
+      <!-- h2: なぜ作ったか -->
+      <h2>なぜ「恐竜図鑑アプリ」を作ったか</h2>
+
+      <p>子ども向けの知育アプリには、広告や動画視聴を挟むものが少なくありません。遊んでいる途中に広告が挟まると、子どもの集中も、見守る保護者の安心感も削られます。私は元ゲーム開発エンジニアで、今はビジネスアプリの企画・開発をClaude Code × CodeXを使った個人開発で進めていますが、「子どもに安心して渡せるアプリを、自分の手で作れないか」という気持ちがずっとありました。</p>
+
+      <p>そこで企画したのが「ぼくの恐竜ずかん」です。恐竜を探索して発見し、クイズに答えて図鑑を育てていく、広告なし・課金なしの学習アプリです。理屈より先に「動くもの」を作って触ってみることを優先し、SwiftUIでプロトタイプを組み、実際に画面が動く状態から少しずつ機能を足していきました。プロトタイプが早く動けば、良し悪しの判断も早くなります。これは個人開発でもビジネスアプリ開発でも変わらない進め方です。</p>
+
+      <!-- h2: 目指した体験 -->
+      <h2>目指した体験：ただの図鑑ではなく「探索して覚える」流れ</h2>
+
+      <p>恐竜図鑑と聞くと、一覧を眺めて終わる静的なコンテンツを想像するかもしれません。しかし私が目指したのは、探索・発見・クイズ・復習という流れを繰り返しながら、子どもが少しずつ恐竜に詳しくなっていく体験でした。</p>
+
+      <img src="images/02_encounter.png" alt="恐竜を発見した画面" class="article-img">
+      <p class="article-img-caption">探索エネルギーを使って恐竜を発見する瞬間。ここから図鑑に追加され、クイズにつながります。</p>
+
+      <p>探索して恐竜と出会い、クイズに答えて図鑑のページを埋めていく。間違えた問題は復習として再度出題される。この一連のループが、4〜6歳の子どもが毎日短時間でも戻ってきたくなる設計になるよう意識しました。</p>
+
+      <img src="images/03_quiz.png" alt="恐竜についてのクイズ画面" class="article-img">
+      <p class="article-img-caption">通常クイズの画面。発見した恐竜そのものについて出題されます。</p>
+
+      <p>クイズの母数は、共通問題130問、個体別問題1,345候補の合計1,475候補、登場する恐竜・古代生物は30個体です。同じ恐竜でも毎回違う角度から問われるようにすることで、「暗記」ではなく「繰り返し触れて自然に覚える」感覚に近づけています。</p>
+
+      <!-- h2: 開発で大事にしたこと -->
+      <h2>開発で大事にしたこと</h2>
+
+      <p>子ども向けアプリとして、機能を増やすこと以上に「削ること」「守ること」に時間を使いました。特に意識したのは次の3点です。</p>
+
+      <div class="trend-card">
+        <div class="trend-num">1</div>
+        <h3>4〜6歳が読める文章にする</h3>
+        <p>クイズの問題文やヒントは、漢字を避けてひらがな中心にし、一文を短く保ちました。大人向けの図鑑アプリの文章をそのまま流用するのではなく、対象年齢に合わせて一からトーンを作り直しています。</p>
+      </div>
+
+      <div class="trend-card">
+        <div class="trend-num">2</div>
+        <h3>広告なし・課金なし・外部送信なしを貫く</h3>
+        <p>スタミナ制の探索エネルギーを採用していますが、不足したときに動画視聴を要求する設計は途中でやめました。子どもがどこを触っても不安な導線に当たらないことを、機能追加よりも優先しています。</p>
+      </div>
+
+      <div class="trend-card">
+        <div class="trend-num">3</div>
+        <h3>横向き固定・短時間プレイに最適化する</h3>
+        <p>iPhone専用・iOS 17以降・横向き固定という仕様にし、1回のプレイが数分で完結するテンポにしました。保護者が横で少し目を離しても、区切りよく終われる長さを意識しています。</p>
+      </div>
+
+      <img src="images/05_quiz_hint.png" alt="ヒントを見ながら答えられるクイズ画面" class="article-img">
+      <p class="article-img-caption">ヒント付きクイズ。答えに迷ったときも、自分の力で正解にたどり着けるよう補助を入れています。</p>
+
+      <img src="images/06_review_question.png" alt="ふくしゅう問題が表示された画面" class="article-img">
+      <p class="article-img-caption">復習問題。一度間違えた問題を後日もう一度出すことで、定着を後押しします。</p>
+
+      <!-- h2: 苦労したところ -->
+      <h2>苦労したところ</h2>
+
+      <p>機能そのものは早い段階で動いていましたが、「子どもが実際に触ったときに違和感なく使える」状態にするまでには、細かい調整が何度も必要でした。特に印象に残っている4つを記録します。</p>
+
+      <h3>1. クイズの難易度を、いきなり難しくしすぎない</h3>
+
+      <p>単に問題数を増やすだけでは、4〜6歳向けの学習体験にはなりませんでした。初回から分類名や学名由来のような難しい問題を出すと、子どもには入り口が重すぎます。そこで最初は「食べもの」「大きさ」のような直感的に答えられるテーマを優先し、習熟度が上がるにつれて時代、化石、発見地、分類へと出題を広げる形に設計し直しました。子どもが答えやすい順番を、後から丁寧に組み直した形です。</p>
+
+      <h3>2. 共通問題が、直前に発見した恐竜とズレる</h3>
+
+      <p>個体ごとの専用問題と、複数の恐竜に共通する問題を交互に出す仕組みにしていましたが、何も考えずに共通問題を混ぜると、直前に発見した恐竜とほとんど関係のない問題が出てしまうことがありました。対応として、共通問題は直前の個体問題と同じテーマからのみ選ぶようにし、対象個体の時代・環境・食性と矛盾する問題は除外しました。条件に合う共通問題がない場合は、無理に無関係な問題で穴埋めしない方針にしています。ランダム性を持たせつつ、学びの流れが崩れないようにする調整でした。</p>
+
+      <h3>3. 恐竜画像が、名前やバッジからはみ出す</h3>
+
+      <p>発見画面では恐竜の画像を大きく見せたい一方で、名前やレア度バッジを隠すわけにはいきません。特に大型・最大級の個体で拡大率を上げると、画像が表示領域からはみ出しやすくなりました。最終的な表示サイズが領域内に収まるよう調整し、表示領域に <code>clipped()</code> を適用して、通常クイズとエキスパートクイズにも同じ方針を適用しました。迫力を出すことと、情報を隠さないことを両立させる調整です。</p>
+
+      <h3>4. 白背景の恐竜素材が、アプリ画面で浮く</h3>
+
+      <p>恐竜素材の一部は白背景のPNGだったため、そのまま配置すると背景の上で白い四角として目立ってしまいました。対応として <code>blendMode(.multiply)</code> を使い、薄緑を基調としたエリア背景に自然になじむよう調整しています。素材そのものを作り直すのではなく、表示側の合成方法を工夫することで解決しました。</p>
+
+      <div class="callout">
+        <p><strong>「動くものにしか、人は興味を持たない」</strong> — クイズのロジックも画像の調整も、企画書の上では正しく見えても、実際に子どもの目線で動かしてみて初めて「まだ重い」「ここが浮いている」と気づけました。動かして、触って、直す。このサイクルを何周も回したことが、今回の一番の作業でした。</p>
+      </div>
+
+      <img src="images/07_parent_report.png" alt="保護者向けの学習レポート画面" class="article-img">
+      <p class="article-img-caption">保護者レポート画面。計算式ゲートを通過すると開く仕組みにし、子ども任せにしすぎない設計にしています。</p>
+
+      <!-- h2: 申請準備 -->
+      <h2>App Store申請までに準備したこと</h2>
+
+      <p>主要機能が動いていても、それだけではストアに出せません。「アプリを作る」ことと「ストアに出す」ことは、はっきり別の作業でした。今回準備したのは次の項目です。</p>
+
+      <ul class="check-list">
+        <li>App Icon・Launch Screenの用意</li>
+        <li>App Store Connect提出用スクリーンショット7枚（2778×1284の横向きPNG）</li>
+        <li>アプリ説明文・年齢区分・プライバシー関連の回答</li>
+        <li>広告なし・課金なし・外部送信なしの表現が、実際の挙動と矛盾しないかの確認</li>
+        <li>UIテストでの動作検証（4 tests / 0 failures）</li>
+        <li>Release / generic iOS構成でのビルド確認（BUILD SUCCEEDED）</li>
+      </ul>
+
+      <p>アプリ本体の実装が一区切りついた後も、素材づくりと確認作業に想像以上の時間がかかりました。特にスクリーンショットは、元の撮影画像が縦向きになっているものもあり、提出用に横向き2778×1284で7枚を用意し直す必要がありました。</p>
+
+      <table>
+        <thead>
+          <tr><th>項目</th><th>内容</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>アプリ名</td><td>ぼくの恐竜ずかん</td></tr>
+          <tr><td>Bundle ID</td><td><code>com.ravencrow.zukangrowth</code></td></tr>
+          <tr><td>申請バージョン</td><td>Version 1.1.0 / Build 3</td></tr>
+          <tr><td>対象端末</td><td>iPhone専用、iOS 17以降</td></tr>
+          <tr><td>画面向き</td><td>横向き固定</td></tr>
+          <tr><td>収益・広告</td><td>広告なし、アプリ内課金なし</td></tr>
+          <tr><td>データ送信</td><td>外部サーバーへの送信なし</td></tr>
+          <tr><td>現在のステータス</td><td>App Store Connectへ審査提出中</td></tr>
+        </tbody>
+      </table>
+
+      <p>2026年7月14日時点で、App Store Connectへの審査提出が完了しています。まだ公開はされていないため、この記事を書いている時点ではダウンロードできません。審査の進捗が動き次第、続報としてまとめる予定です。</p>
+
+      <!-- h2: まとめ -->
+      <h2>まとめ</h2>
+
+      <p>「ぼくの恐竜ずかん」は、企画から実装、細かい調整、申請準備まで、すべて一人で進めた個人開発です。SwiftUIでの実装そのものより、子どもの目線に立って「まだ重い」「ここが浮いている」を一つずつ直していく作業の方が、実は時間がかかりました。それでも、動くものを早い段階で作り、実際に触りながら直していくやり方は、非エンジニアであってもアプリをつくりたい人にとって再現できるプロセスだと思っています。</p>
+
+      <ul>
+        <li>クイズは易しいテーマから始め、習熟度に応じて難易度を広げる</li>
+        <li>ランダム性があっても、直前の文脈と矛盾しないよう出題ロジックを絞る</li>
+        <li>画像の迫力と情報の可読性は、表示領域とクリッピングの調整で両立できる</li>
+        <li>広告・課金・外部送信をしない設計は、機能を削る決断の積み重ねで作られる</li>
+        <li>「アプリを作る」と「ストアに出す」は別の作業として、後半の準備期間を見込んでおく</li>
+      </ul>
+
+      <p>今後は実機での最終確認と審査対応を続けながら、公開後の続報も記事にしていく予定です。</p>
+
+    </article>
+  </main>
+
+  <!-- ===== CTA ===== -->
+  <section class="article-cta">
+    <div class="article-cta-inner">
+      <h2>もっと読む・つながる</h2>
+      <p>KODO-AIでは個人開発 × AIの実践知を発信しています。<br>気になることがあればお気軽にどうぞ。</p>
+      <div class="cta-buttons">
+        <a href="/articles/" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          記事一覧へ
+        </a>
+        <a href="mailto:ravencrow080@gmail.com" class="btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          お問い合わせ
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <a href="/" class="footer-brand">KODO<span>-AI</span></a>
+    <ul class="footer-links">
+      <li><a href="/articles/">Articles</a></li>
+      <li><a href="/#works">Works</a></li>
+      <li><a href="/#about">About</a></li>
+      <li><a href="/privacy/">プライバシーポリシー</a></li>
+      <li><a href="mailto:ravencrow080@gmail.com">お問い合わせ</a></li>
+    </ul>
+    <p class="footer-copy">© 2026 KODO-AI. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
