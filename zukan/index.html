@@ -4,15 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ぼくの恐竜ずかん — 探索・発見・クイズで学ぶ恐竜図鑑知育アプリ | KODO-AI</title>
-  <meta name="description" content="探索して恐竜や古代生物を発見し、クイズに答えて図鑑を育てる知育アプリ「ぼくの恐竜ずかん」。4〜6歳ごろの子ども向け、広告・外部送信なしの安心設計。iPhone専用、現在App Store審査提出中。">
-  <meta name="keywords" content="恐竜図鑑,知育アプリ,子ども向けアプリ,幼児 アプリ,iOS開発,SwiftUI,個人開発,AI個人開発,Claude Code,App Store申請">
+  <meta name="description" content="探索して恐竜や古代生物を発見し、クイズに答えて図鑑を育てる知育アプリ「ぼくの恐竜ずかん」。4〜6歳ごろの子ども向け、広告・外部送信なしの安心設計。iPhone専用、App Storeにて¥100で配信中。">
+  <meta name="keywords" content="恐竜図鑑,知育アプリ,子ども向けアプリ,幼児 アプリ,iOS開発,SwiftUI,個人開発,AI個人開発,Claude Code,App Store配信中">
   <link rel="canonical" href="https://kodo-ai.net/zukan/">
 
   <!-- OGP -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://kodo-ai.net/zukan/">
   <meta property="og:title" content="ぼくの恐竜ずかん — 探索・発見・クイズで学ぶ恐竜図鑑知育アプリ">
-  <meta property="og:description" content="探索して恐竜や古代生物を発見し、クイズに答えて図鑑を育てる4〜6歳ごろ向けの知育アプリ。広告なし・外部送信なしの安心設計。現在App Store審査提出中。">
+  <meta property="og:description" content="探索して恐竜や古代生物を発見し、クイズに答えて図鑑を育てる4〜6歳ごろ向けの知育アプリ。広告なし・外部送信なしの安心設計。App Storeで配信中（¥100）。">
   <meta property="og:image" content="https://kodo-ai.net/zukan/images/og-card.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -22,7 +22,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="ぼくの恐竜ずかん — 探索・発見・クイズで学ぶ恐竜図鑑知育アプリ">
-  <meta name="twitter:description" content="探索して恐竜や古代生物を発見し、クイズに答えて図鑑を育てる4〜6歳ごろ向けの知育アプリ。現在App Store審査提出中。">
+  <meta name="twitter:description" content="探索して恐竜や古代生物を発見し、クイズに答えて図鑑を育てる4〜6歳ごろ向けの知育アプリ。App Storeで配信中（¥100）。">
   <meta name="twitter:image" content="https://kodo-ai.net/zukan/images/og-card.png">
 
   <script type="application/ld+json">
@@ -33,12 +33,13 @@
       "@type": "SoftwareApplication",
       "@id": "https://kodo-ai.net/zukan/",
       "name": "ぼくの恐竜ずかん",
-      "description": "探索して恐竜や古代生物を発見し、クイズに答えて図鑑を育てる4〜6歳ごろ向けの知育アプリ。広告なし・外部送信なしの安心設計。現在App Store審査提出中で、リリース準備中です。",
+      "description": "探索して恐竜や古代生物を発見し、クイズに答えて図鑑を育てる4〜6歳ごろ向けの知育アプリ。広告なし・外部送信なしの安心設計。App Storeで配信中。",
       "operatingSystem": "iOS 17以降",
       "applicationCategory": "EducationalApplication",
       "url": "https://kodo-ai.net/zukan/",
       "image": "https://kodo-ai.net/zukan/images/01_home.png",
       "inLanguage": "ja",
+      "offers": { "@type": "Offer", "price": "100", "priceCurrency": "JPY" },
       "author": { "@id": "https://kodo-ai.net/#person" },
       "publisher": { "@id": "https://kodo-ai.net/#person" }
     },
@@ -142,44 +143,45 @@
       z-index: 1;
     }
 
-    .review-badge {
+    .store-cta {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      background: rgba(28,38,32,0.35);
-      backdrop-filter: blur(6px);
-      border: 1px solid rgba(255,255,255,0.35);
-      color: var(--white);
+      gap: 12px;
+      background: var(--white);
+      text-decoration: none;
       padding: 12px 22px;
       border-radius: 14px;
       font-size: 14px;
       font-weight: 600;
       position: relative;
       z-index: 1;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+      transition: transform 0.2s;
     }
 
-    .review-badge .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--orange-light);
-      box-shadow: 0 0 0 4px rgba(255,184,112,0.25);
+    .store-cta:hover {
+      transform: translateY(-2px);
+    }
+
+    .store-cta-icon {
+      font-size: 24px;
       flex-shrink: 0;
-      animation: pulse 1.6s ease-in-out infinite;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
-
-    .review-badge-text {
+    .store-cta-text {
       text-align: left;
       line-height: 1.4;
     }
 
-    .review-badge-main { display: block; font-size: 14px; font-weight: 700; }
-    .review-badge-sub { display: block; font-size: 11px; font-weight: 400; opacity: 0.85; margin-top: 1px; }
+    .store-cta-sub { display: block; font-size: 11px; font-weight: 600; color: var(--green); }
+    .store-cta-main { display: block; font-size: 15px; font-weight: 800; color: var(--dark); }
+    .store-cta-price {
+      display: inline-block;
+      margin-left: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--orange);
+    }
 
     .hero-meta {
       display: flex;
@@ -557,18 +559,19 @@
     <img class="app-icon" src="images/AppIcon-1024.png" alt="ぼくの恐竜ずかん アプリアイコン">
     <h1>ぼくの恐竜ずかん</h1>
     <p class="tagline">探索して、発見して、クイズで学ぶ。子どもと育てる恐竜図鑑</p>
-    <div class="review-badge">
-      <span class="dot"></span>
-      <span class="review-badge-text">
-        <span class="review-badge-main">App Store 審査提出中</span>
-        <span class="review-badge-sub">公開までもうしばらくお待ちください</span>
+    <a class="store-cta" href="https://apps.apple.com/jp/app/%E3%81%BC%E3%81%8F%E3%81%AE%E6%81%90%E7%AB%9C%E3%81%9A%E3%81%8B%E3%82%93/id6785927366" target="_blank" rel="noopener">
+      <span class="store-cta-icon">📲</span>
+      <span class="store-cta-text">
+        <span class="store-cta-sub">App Storeで配信中</span>
+        <span class="store-cta-main">ダウンロードする<span class="store-cta-price">¥100</span></span>
       </span>
-    </div>
+    </a>
     <div class="hero-meta">
       <span>iPhone専用</span>
       <span>iOS 17以降</span>
       <span>横向き固定</span>
       <span>4〜6歳ごろの子ども向け</span>
+      <span>¥100（買い切り）</span>
     </div>
   </section>
 
